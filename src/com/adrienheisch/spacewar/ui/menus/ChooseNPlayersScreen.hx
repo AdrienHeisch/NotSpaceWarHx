@@ -1,6 +1,7 @@
 package com.adrienheisch.spacewar.ui.menus;
 
-import flash.errors.Error;
+import openfl.Assets;
+import openfl.errors.Error;
 import com.adrienheisch.spacewar.game.GameManager;
 import com.adrienheisch.spacewar.ui.buttons.NumberButton;
 
@@ -46,6 +47,11 @@ class ChooseNPlayersScreen extends NumberChoiceMenu
         {
             _instance = this;
         }
+		
+		addChild(sprite = Assets.getMovieClip("swf-lib:ChooseNPlayersScreen"));
+		
+		mcButton1 = cast(sprite.getChildByName("mcButton1"), NumberButton);
+		mcButton2 = cast(sprite.getChildByName("mcButton2"), NumberButton);
     }
     
     override public function buttonClicked(pIndex : Int) : Void

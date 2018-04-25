@@ -1,9 +1,10 @@
 package com.adrienheisch.spacewar.ui.buttons;
 
-import flash.errors.Error;
 import com.adrienheisch.spacewar.ui.buttons.CustomButton;
 import com.adrienheisch.spacewar.ui.menus.NumberChoiceMenu;
-import flash.events.Event;
+import openfl.Assets;
+import openfl.errors.Error;
+import openfl.events.Event;
 
 /**
 	 * ...
@@ -15,6 +16,8 @@ class NumberButton extends CustomButton
     
     public function new()
     {
+		addChild(clip = Assets.getMovieClip("swf-lib:NumberButton"));
+		
         super();
         
         if (name != null)

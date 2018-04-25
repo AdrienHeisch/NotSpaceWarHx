@@ -1,15 +1,16 @@
 package com.adrienheisch.spacewar.game;
 
 import com.adrienheisch.spacewar.ui.Hud;
-import flash.display.MovieClip;
-import flash.geom.ColorTransform;
-import flash.geom.Point;
+import openfl.Assets;
+import openfl.display.Sprite;
+import openfl.geom.ColorTransform;
+import openfl.geom.Point;
 
 /**
 	 * ...
 	 * @author Adrien Heisch
 	 */
-class Bullet extends MovieClip
+class Bullet extends Sprite
 {
     public var color(never, set) : Int;
 
@@ -23,12 +24,16 @@ class Bullet extends MovieClip
     public var parentShip : Ship;
     public var parentShipId : Int;
     public var velocity : Point;
+	
+	public var sprite:Sprite;
     
     public function new()
     {
         super();
         
         list.push(this);
+		
+		addChild(sprite = Assets.getMovieClip("swf-lib:Bullet"));
         
         cacheAsBitmap = true;
     }

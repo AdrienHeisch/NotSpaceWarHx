@@ -1,19 +1,21 @@
 package com.adrienheisch.spacewar.ui.buttons;
 
-import flash.display.MovieClip;
-import flash.display.SimpleButton;
-import flash.events.Event;
-import flash.events.MouseEvent;
-import flash.text.TextField;
+import openfl.display.MovieClip;
+import openfl.display.SimpleButton;
+import openfl.display.Sprite;
+import openfl.events.Event;
+import openfl.events.MouseEvent;
+import openfl.text.TextField;
 
 /**
-	 * ...
-	 * @author Adrien Heisch
-	 */
-class CustomButton extends MovieClip
+ * ...
+ * @author Adrien Heisch
+ */
+class CustomButton extends Sprite
 {
     public static var list : Array<CustomButton> = new Array<CustomButton>();
     
+	public var clip:MovieClip;
     public var txtDisplay : TextField;
     public var btnMenu : SimpleButton;
     
@@ -22,13 +24,14 @@ class CustomButton extends MovieClip
         super();
         
         list.push(this);
-        
-        stop();
-        
+		
+		txtDisplay = cast(clip.getChildByName("txtDisplay"), TextField);
+		btnMenu = cast(clip.getChildByName("btnMenu"), SimpleButton);
+		
+        clip.stop();
         txtDisplay.mouseEnabled = false;
-        
         btnMenu.addEventListener(MouseEvent.CLICK, onClick);
-    }
+	}
     
     private function onClick(pEvent : Event) : Void
     {

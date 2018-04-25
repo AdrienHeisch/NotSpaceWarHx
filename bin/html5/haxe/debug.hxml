@@ -5,8 +5,10 @@
 --macro lime.Lib.extraParams()
 -cp D:/Programmes/HaxeToolkit/haxe/lib/lime/6,2,0
 -D lime=6.2.0
+-cp D:\Dev\Haxe\NotSpaceWar\bin\html5/haxe/_generated
 -cp src
 -D tools=6.2.0
+-D swf=1
 -D howlerjs
 -D no-compilation
 -D lime-opengl
@@ -17,6 +19,18 @@
 -D html5
 -D web
 --remap flash:openfl
+HealthBar
+ChooseNPlayersScreen
+ChooseNShipsScreen
+NumberButton
+Hud
+Explosion
+com.adrienheisch.spacewar.ui.menus.MainMenu
+PlayButton
+Ship
+Star
+GameOverScreen
+Bullet5
 -js bin/html5/bin/NotSpaceWar.js
 -cp bin/html5/haxe
 -D html5

@@ -1,16 +1,18 @@
 package com.adrienheisch.spacewar.ui;
 
-import flash.errors.Error;
 import com.adrienheisch.spacewar.game.Ship;
-import flash.display.MovieClip;
-import flash.geom.ColorTransform;
-import flash.text.TextField;
+import flash.display.DisplayObject;
+import flash.display.Sprite;
+import openfl.Assets;
+import openfl.errors.Error;
+import openfl.geom.ColorTransform;
+import openfl.text.TextField;
 
 /**
 	 * ...
 	 * @author Adrien Heisch
 	 */
-class HealthBar extends MovieClip
+class HealthBar extends Sprite
 {
     public var index(never, set) : Int;
 
@@ -21,8 +23,9 @@ class HealthBar extends MovieClip
     private var ship : Ship;
     private var initMaskWidth : Float;
     
-    public var mcFill : MovieClip;
-    public var mcMask : MovieClip;
+	public var sprite:Sprite;
+    public var mcFill : DisplayObject;
+    public var mcMask : DisplayObject;
     public var txtInfo : TextField;
     
     public function new()
@@ -30,6 +33,12 @@ class HealthBar extends MovieClip
         super();
         
         list.push(this);
+		
+		addChild(sprite = Assets.getMovieClip("swf-lib:HealthBar"));
+		
+		mcFill = sprite.getChildByName("mcFill");
+		mcMask = sprite.getChildByName("mcMask");
+		txtInfo = cast(sprite.getChildByName("txtInfo"), TextField);
         
         initMaskWidth = mcMask.width;
     }

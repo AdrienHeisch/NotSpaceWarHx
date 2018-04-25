@@ -4,7 +4,7 @@ import com.adrienheisch.spacewar.Main;
 import com.adrienheisch.spacewar.ui.menus.ChooseNPlayersScreen;
 import com.adrienheisch.spacewar.ui.menus.ChooseNShipsScreen;
 import com.adrienheisch.spacewar.ui.menus.MainMenu;
-import flash.display.Stage;
+import openfl.display.Stage;
 
 /**
 	 * ...

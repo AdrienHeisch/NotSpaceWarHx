@@ -1,7 +1,7 @@
 package com.adrienheisch.spacewar.background;
 
 import com.adrienheisch.spacewar.Main;
-import flash.display.Stage;
+import openfl.display.Stage;
 
 /**
 	 * ...

@@ -1,7 +1,7 @@
 package com.adrienheisch.spacewar.game;
 
-import flash.errors.Error;
-import flash.display.MovieClip;
+import openfl.errors.Error;
+import openfl.display.MovieClip;
 
 /**
 	 * ...

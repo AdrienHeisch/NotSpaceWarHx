@@ -1,7 +1,7 @@
 package com.adrienheisch.spacewar.game;
 
 import com.adrienheisch.utils.MoreMaths;
-import flash.geom.Point;
+import openfl.geom.Point;
 
 /**
 	 * ...

@@ -1,8 +1,8 @@
 package com.adrienheisch.spacewar.ui;
 
-import flash.errors.Error;
-import flash.display.MovieClip;
-import flash.events.Event;
+import openfl.errors.Error;
+import openfl.display.MovieClip;
+import openfl.events.Event;
 
 /**
 	 * ...

@@ -1,16 +1,16 @@
 package com.adrienheisch.spacewar.ui;
 
-import flash.errors.Error;
+import openfl.errors.Error;
 import com.adrienheisch.spacewar.Main;
 import com.adrienheisch.spacewar.background.BackgroundContainer;
 import com.adrienheisch.spacewar.game.GameContainer;
 import com.adrienheisch.spacewar.game.GameManager;
 import com.adrienheisch.spacewar.game.Ship;
 import com.adrienheisch.utils.KeyboardManager;
-import flash.display.MovieClip;
-import flash.events.Event;
-import flash.text.TextField;
-import flash.ui.Keyboard;
+import openfl.display.MovieClip;
+import openfl.events.Event;
+import openfl.text.TextField;
+import openfl.ui.Keyboard;
 
 /**
 	 * ...

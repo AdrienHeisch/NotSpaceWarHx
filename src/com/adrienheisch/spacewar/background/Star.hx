@@ -1,6 +1,8 @@
 package com.adrienheisch.spacewar.background;
 
-import flash.display.MovieClip;
+import openfl.Assets;
+import openfl.display.MovieClip;
+import openfl.display.Sprite;
 
 /**
 	 * ...
@@ -10,6 +12,8 @@ class Star extends MovieClip
 {
     
     public static var list : Array<Star> = new Array<Star>();
+	
+	public var sprite:Sprite;
     
     public function new()
     {
@@ -17,6 +21,8 @@ class Star extends MovieClip
         
         list.push(this);
         
+		sprite = Assets.getMovieClip("swf-lib:Star");
+		
         cacheAsBitmap = true;
         
         var lScale : Float = Math.random();

@@ -2,8 +2,8 @@ package com.adrienheisch.spacewar.game;
 
 import com.adrienheisch.spacewar.Main;
 import com.adrienheisch.spacewar.ui.UIManager;
-import flash.display.Stage;
-import flash.events.Event;
+import openfl.display.Stage;
+import openfl.events.Event;
 
 /**
 	 * ...

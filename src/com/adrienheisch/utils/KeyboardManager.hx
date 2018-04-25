@@ -1,8 +1,8 @@
 package com.adrienheisch.utils;
 
 import com.adrienheisch.spacewar.Main;
-import flash.display.Stage;
-import flash.events.KeyboardEvent;
+import openfl.display.Stage;
+import openfl.events.KeyboardEvent;
 
 /**
 	 * ...

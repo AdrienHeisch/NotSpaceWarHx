@@ -1,6 +1,6 @@
 package com.adrienheisch.utils;
 
-import flash.geom.Point;
+import openfl.geom.Point;
 
 /**
 	 * ...

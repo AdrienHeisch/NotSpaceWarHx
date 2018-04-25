@@ -1,7 +1,8 @@
 package com.adrienheisch.spacewar.ui.menus;
 
 import com.adrienheisch.spacewar.ui.buttons.CustomButton;
-import flash.display.MovieClip;
+import openfl.display.MovieClip;
+import openfl.display.Sprite;
 
 /**
 	 * ...
@@ -9,7 +10,9 @@ import flash.display.MovieClip;
 	 */
 class Menu extends MovieClip
 {
-    
+	
+	public var sprite:Sprite;
+	
     public function new()
     {
         super();

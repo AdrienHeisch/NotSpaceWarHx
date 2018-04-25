@@ -4,7 +4,6 @@
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
 	<meta title="NotSpaceWar" package="com.adrienheisch.spacewar" version="1.0.0" company="Adrien Heisch" />
-	<template path="bin/html5/bin/index.html" rename="index.html" if="html5" />
 	
 	<!-- output -->
 	<app main="com.adrienheisch.spacewar.Main" file="NotSpaceWar" path="bin" />
@@ -20,6 +19,7 @@
 	<!-- assets -->
 	<icon path="assets/icon.png" />
 	<assets path="assets/img" rename="img" />
+	<library path="assets/swf/NotSpaceWar.swf" id="swf-lib" preload="true" />
 	
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->

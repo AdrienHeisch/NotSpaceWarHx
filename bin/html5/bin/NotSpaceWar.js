@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "NotSpaceWar";
-	var config = { build : "2", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.notspacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
+	var config = { build : "4", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.spacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -3845,25 +3845,1014 @@ openfl_display_Sprite.prototype = $extend(openfl_display_DisplayObjectContainer.
 	}
 	,__class__: openfl_display_Sprite
 });
-var com_adrienheisch_notspacewar_Main = function() {
+var openfl_display_MovieClip = function() {
 	openfl_display_Sprite.call(this);
+	this.__currentFrame = 1;
+	this.__currentLabels = [];
+	this.__totalFrames = 0;
+	this.enabled = true;
+	if(openfl_display_MovieClip.__initSymbol != null) {
+		this.__swf = openfl_display_MovieClip.__initSWF;
+		this.__symbol = openfl_display_MovieClip.__initSymbol;
+		openfl_display_MovieClip.__initSWF = null;
+		openfl_display_MovieClip.__initSymbol = null;
+		this.__fromSymbol(this.__swf,this.__symbol);
+	}
 };
-$hxClasses["com.adrienheisch.notspacewar.Main"] = com_adrienheisch_notspacewar_Main;
-com_adrienheisch_notspacewar_Main.__name__ = ["com","adrienheisch","notspacewar","Main"];
-com_adrienheisch_notspacewar_Main.__super__ = openfl_display_Sprite;
-com_adrienheisch_notspacewar_Main.prototype = $extend(openfl_display_Sprite.prototype,{
-	__class__: com_adrienheisch_notspacewar_Main
+$hxClasses["openfl.display.MovieClip"] = openfl_display_MovieClip;
+openfl_display_MovieClip.__name__ = ["openfl","display","MovieClip"];
+openfl_display_MovieClip.__super__ = openfl_display_Sprite;
+openfl_display_MovieClip.prototype = $extend(openfl_display_Sprite.prototype,{
+	enabled: null
+	,__activeInstances: null
+	,__activeInstancesByFrameObjectID: null
+	,__currentFrame: null
+	,__currentFrameLabel: null
+	,__currentLabel: null
+	,__currentLabels: null
+	,__frameScripts: null
+	,__frameTime: null
+	,__lastFrameScriptEval: null
+	,__lastFrameUpdate: null
+	,__playing: null
+	,__swf: null
+	,__symbol: null
+	,__timeElapsed: null
+	,__totalFrames: null
+	,addFrameScript: function(index,method) {
+		if(index < 0) {
+			return;
+		}
+		var frame = index + 1;
+		if(method != null) {
+			if(this.__frameScripts == null) {
+				this.__frameScripts = new haxe_ds_IntMap();
+			}
+			this.__frameScripts.h[frame] = method;
+		} else if(this.__frameScripts != null) {
+			this.__frameScripts.remove(frame);
+		}
+	}
+	,gotoAndPlay: function(frame,scene) {
+		this.play();
+		this.__goto(this.__resolveFrameReference(frame));
+	}
+	,gotoAndStop: function(frame,scene) {
+		this.stop();
+		this.__goto(this.__resolveFrameReference(frame));
+	}
+	,nextFrame: function() {
+		this.stop();
+		this.__goto(this.__currentFrame + 1);
+	}
+	,play: function() {
+		if(this.__symbol == null || this.__playing || this.__totalFrames < 2) {
+			return;
+		}
+		this.__playing = true;
+		this.__frameTime = 1000 / this.__swf.frameRate | 0;
+		this.__timeElapsed = 0;
+	}
+	,prevFrame: function() {
+		this.stop();
+		this.__goto(this.__currentFrame - 1);
+	}
+	,stop: function() {
+		this.__playing = false;
+	}
+	,__enterFrame: function(deltaTime) {
+		if(this.__symbol != null && this.__playing) {
+			var nextFrame = this.__getNextFrame(deltaTime);
+			if(this.__lastFrameScriptEval == nextFrame) {
+				return;
+			}
+			if(this.__frameScripts != null) {
+				if(nextFrame < this.__currentFrame) {
+					if(!this.__evaluateFrameScripts(this.__totalFrames)) {
+						return;
+					}
+					this.__currentFrame = 1;
+				}
+				if(!this.__evaluateFrameScripts(nextFrame)) {
+					return;
+				}
+			} else {
+				this.__currentFrame = nextFrame;
+			}
+		}
+		if(this.__symbol != null && this.__currentFrame != this.__lastFrameUpdate) {
+			this.__updateFrameLabel();
+			var currentInstancesByFrameObjectID = new haxe_ds_IntMap();
+			var frame;
+			var frameData;
+			var instance;
+			var _g1 = 0;
+			var _g = this.__currentFrame;
+			while(_g1 < _g) {
+				var i = _g1++;
+				frame = i + 1;
+				frameData = this.__symbol.frames[i];
+				if(frameData.objects == null) {
+					continue;
+				}
+				var _g2 = 0;
+				var _g3 = frameData.objects;
+				while(_g2 < _g3.length) {
+					var frameObject = _g3[_g2];
+					++_g2;
+					var _g4 = frameObject.type;
+					switch(_g4[1]) {
+					case 0:
+						instance = this.__activeInstancesByFrameObjectID.get(frameObject.id);
+						if(instance != null) {
+							currentInstancesByFrameObjectID.h[frameObject.id] = instance;
+							this.__updateDisplayObject(instance.displayObject,frameObject);
+						}
+						break;
+					case 1:
+						instance = currentInstancesByFrameObjectID.h[frameObject.id];
+						if(instance != null && instance.displayObject != null) {
+							this.__updateDisplayObject(instance.displayObject,frameObject);
+						}
+						break;
+					case 2:
+						currentInstancesByFrameObjectID.remove(frameObject.id);
+						break;
+					}
+				}
+			}
+			var currentInstances = [];
+			var currentMasks = [];
+			var instance1 = currentInstancesByFrameObjectID.iterator();
+			while(instance1.hasNext()) {
+				var instance2 = instance1.next();
+				if(currentInstances.indexOf(instance2) == -1) {
+					currentInstances.push(instance2);
+					if(instance2.clipDepth > 0) {
+						currentMasks.push(instance2);
+					}
+				}
+			}
+			currentInstances.sort($bind(this,this.__sortDepths));
+			var existingChild;
+			var targetDepth;
+			var targetChild;
+			var child;
+			var maskApplied;
+			var _g11 = 0;
+			var _g5 = currentInstances.length;
+			while(_g11 < _g5) {
+				var i1 = _g11++;
+				existingChild = this.__children[i1];
+				instance = currentInstances[i1];
+				targetDepth = instance.depth;
+				targetChild = instance.displayObject;
+				if(existingChild != targetChild) {
+					child = targetChild;
+					this.addChildAt(targetChild,i1);
+				} else {
+					child = this.__children[i1];
+				}
+				maskApplied = false;
+				var _g21 = 0;
+				while(_g21 < currentMasks.length) {
+					var mask = currentMasks[_g21];
+					++_g21;
+					if(targetDepth > mask.depth && targetDepth <= mask.clipDepth) {
+						child.set_mask(mask.displayObject);
+						maskApplied = true;
+						break;
+					}
+				}
+				if(currentMasks.length > 0 && !maskApplied && child.get_mask() != null) {
+					child.set_mask(null);
+				}
+			}
+			var child1;
+			var i2 = currentInstances.length;
+			var length = this.__children.length;
+			while(i2 < length) {
+				child1 = this.__children[i2];
+				var _g6 = 0;
+				var _g12 = this.__activeInstances;
+				while(_g6 < _g12.length) {
+					var instance3 = _g12[_g6];
+					++_g6;
+					if(instance3.displayObject == child1) {
+						this.removeChild(child1);
+						--i2;
+						--length;
+					}
+				}
+				++i2;
+			}
+			this.__lastFrameUpdate = this.__currentFrame;
+		}
+		openfl_display_Sprite.prototype.__enterFrame.call(this,deltaTime);
+	}
+	,__evaluateFrameScripts: function(advanceToFrame) {
+		var _g1 = this.__currentFrame;
+		var _g = advanceToFrame + 1;
+		while(_g1 < _g) {
+			var frame = _g1++;
+			if(frame == this.__lastFrameScriptEval) {
+				continue;
+			}
+			this.__lastFrameScriptEval = frame;
+			this.__currentFrame = frame;
+			if(this.__frameScripts.h.hasOwnProperty(frame)) {
+				var script = this.__frameScripts.h[frame];
+				script();
+				if(this.__currentFrame != frame) {
+					return false;
+				}
+			}
+			if(!this.__playing) {
+				break;
+			}
+		}
+		return true;
+	}
+	,__fromSymbol: function(swf,symbol) {
+		var _gthis = this;
+		if(this.__activeInstances != null) {
+			return;
+		}
+		this.__swf = swf;
+		this.__symbol = symbol;
+		this.__activeInstances = [];
+		this.__activeInstancesByFrameObjectID = new haxe_ds_IntMap();
+		this.__currentFrame = 1;
+		this.__lastFrameScriptEval = -1;
+		this.__lastFrameUpdate = -1;
+		this.__totalFrames = this.__symbol.frames.length;
+		var frame;
+		var frameData;
+		var _g1 = 0;
+		var _g = this.__symbol.frames.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			frame = i + 1;
+			frameData = this.__symbol.frames[i];
+			if(frameData.label != null) {
+				this.__currentLabels.push(new openfl_display_FrameLabel(frameData.label,i + 1));
+			}
+			if(frameData.script != null) {
+				if(this.__frameScripts == null) {
+					this.__frameScripts = new haxe_ds_IntMap();
+				}
+				this.__frameScripts.h[frame] = frameData.script;
+			} else if(frameData.scriptSource != null) {
+				if(this.__frameScripts == null) {
+					this.__frameScripts = new haxe_ds_IntMap();
+				}
+				try {
+					var script = [eval("(function(){" + frameData.scriptSource + "})")];
+					var wrapper = (function(script1) {
+						return function() {
+							try {
+								script1[0].call(_gthis);
+							} catch( e ) {
+								haxe_CallStack.lastException = e;
+								if (e instanceof js__$Boot_HaxeError) e = e.val;
+								haxe_Log.trace("Error evaluating frame script\n " + Std.string(e) + "\n" + haxe_CallStack.exceptionStack().map((function() {
+									return function(a) {
+										return a[2];
+									};
+								})()).join("\n") + "\n" + Std.string(e.stack) + "\n" + script1[0].toString(),{ fileName : "MovieClip.hx", lineNumber : 503, className : "openfl.display.MovieClip", methodName : "__fromSymbol"});
+							}
+						};
+					})(script);
+					this.__frameScripts.h[frame] = wrapper;
+				} catch( e1 ) {
+					haxe_CallStack.lastException = e1;
+					if(this.__symbol.className != null) {
+						lime_utils_Log.warn("Unable to evaluate frame script source for symbol \"" + this.__symbol.className + "\" frame " + frame + "\n" + frameData.scriptSource,{ fileName : "MovieClip.hx", lineNumber : 519, className : "openfl.display.MovieClip", methodName : "__fromSymbol"});
+					} else {
+						lime_utils_Log.warn("Unable to evaluate frame script source:\n" + frameData.scriptSource,{ fileName : "MovieClip.hx", lineNumber : 523, className : "openfl.display.MovieClip", methodName : "__fromSymbol"});
+					}
+				}
+			}
+		}
+		var frame1;
+		var frameData1;
+		var instance;
+		var duplicate;
+		var symbol1;
+		var displayObject;
+		var _g11 = 0;
+		var _g2 = this.__totalFrames;
+		while(_g11 < _g2) {
+			var i1 = _g11++;
+			frame1 = i1 + 1;
+			frameData1 = this.__symbol.frames[i1];
+			if(frameData1.objects == null) {
+				continue;
+			}
+			var _g21 = 0;
+			var _g3 = frameData1.objects;
+			while(_g21 < _g3.length) {
+				var frameObject = _g3[_g21];
+				++_g21;
+				if(frameObject.type == openfl__$internal_timeline_FrameObjectType.CREATE) {
+					if(this.__activeInstancesByFrameObjectID.h.hasOwnProperty(frameObject.id)) {
+						continue;
+					} else {
+						instance = null;
+						duplicate = false;
+						var _g4 = 0;
+						var _g5 = this.__activeInstances;
+						while(_g4 < _g5.length) {
+							var activeInstance = _g5[_g4];
+							++_g4;
+							if(activeInstance.displayObject != null && activeInstance.characterID == frameObject.symbol && activeInstance.depth == frameObject.depth) {
+								instance = activeInstance;
+								duplicate = true;
+								break;
+							}
+						}
+					}
+					if(instance == null) {
+						symbol1 = this.__swf.symbols.h[frameObject.symbol];
+						if(symbol1 != null) {
+							displayObject = symbol1.__createObject(this.__swf);
+							if(displayObject != null) {
+								displayObject.parent = this;
+								displayObject.stage = this.stage;
+								instance = new openfl_display__$MovieClip_FrameSymbolInstance(frame1,frameObject.id,frameObject.symbol,frameObject.depth,displayObject,frameObject.clipDepth);
+							}
+						}
+					}
+					if(instance != null) {
+						this.__activeInstancesByFrameObjectID.h[frameObject.id] = instance;
+						if(!duplicate) {
+							this.__activeInstances.push(instance);
+							this.__updateDisplayObject(instance.displayObject,frameObject);
+						}
+					}
+				}
+			}
+		}
+		if(this.__totalFrames > 1) {
+			this.play();
+		}
+		this.__enterFrame(0);
+		var _g6 = 0;
+		var _g12 = Type.getInstanceFields(js_Boot.getClass(this));
+		while(_g6 < _g12.length) {
+			var field = _g12[_g6];
+			++_g6;
+			var _g22 = 0;
+			var _g31 = this.__children;
+			while(_g22 < _g31.length) {
+				var child = _g31[_g22];
+				++_g22;
+				if(child.get_name() == field) {
+					this[field] = child;
+				}
+			}
+		}
+	}
+	,__getNextFrame: function(deltaTime) {
+		this.__timeElapsed += deltaTime;
+		var nextFrame = this.__currentFrame + Math.floor(this.__timeElapsed / this.__frameTime);
+		if(nextFrame < 1) {
+			nextFrame = 1;
+		}
+		if(nextFrame > this.__totalFrames) {
+			nextFrame = Math.floor((nextFrame - 1) % this.__totalFrames) + 1;
+		}
+		this.__timeElapsed %= this.__frameTime;
+		return nextFrame;
+	}
+	,__goto: function(frame) {
+		if(this.__symbol == null) {
+			return;
+		}
+		if(frame < 1) {
+			frame = 1;
+		} else if(frame > this.__totalFrames) {
+			frame = this.__totalFrames;
+		}
+		this.__currentFrame = frame;
+		this.__enterFrame(0);
+	}
+	,__resolveFrameReference: function(frame) {
+		if(typeof(frame) == "number" && ((frame | 0) === frame)) {
+			return frame;
+		} else if(typeof(frame) == "string") {
+			var label = frame;
+			var _g = 0;
+			var _g1 = this.__currentLabels;
+			while(_g < _g1.length) {
+				var frameLabel = _g1[_g];
+				++_g;
+				if(frameLabel.get_name() == label) {
+					return frameLabel.get_frame();
+				}
+			}
+			throw new js__$Boot_HaxeError(new openfl_errors_ArgumentError("Error #2109: Frame label " + label + " not found in scene."));
+		} else {
+			throw new js__$Boot_HaxeError("Invalid type for frame " + Type.getClassName(frame));
+		}
+	}
+	,__sortDepths: function(a,b) {
+		return a.depth - b.depth;
+	}
+	,__stopAllMovieClips: function() {
+		openfl_display_Sprite.prototype.__stopAllMovieClips.call(this);
+		this.stop();
+	}
+	,__updateDisplayObject: function(displayObject,frameObject) {
+		if(displayObject == null) {
+			return;
+		}
+		if(frameObject.name != null) {
+			displayObject.set_name(frameObject.name);
+		}
+		if(frameObject.matrix != null) {
+			displayObject.get_transform().set_matrix(frameObject.matrix);
+		}
+		if(frameObject.colorTransform != null) {
+			displayObject.get_transform().set_colorTransform(frameObject.colorTransform);
+		}
+		if(frameObject.filters != null) {
+			var filters = [];
+			var _g = 0;
+			var _g1 = frameObject.filters;
+			while(_g < _g1.length) {
+				var filter = _g1[_g];
+				++_g;
+				switch(filter[1]) {
+				case 0:
+					var quality = filter[4];
+					var blurY = filter[3];
+					var blurX = filter[2];
+					filters.push(new openfl_filters_BlurFilter(blurX,blurY,quality));
+					break;
+				case 1:
+					var matrix = filter[2];
+					filters.push(new openfl_filters_ColorMatrixFilter(matrix));
+					break;
+				case 2:
+					var hideObject = filter[12];
+					var knockout = filter[11];
+					var inner = filter[10];
+					var quality1 = filter[9];
+					var strength = filter[8];
+					var blurY1 = filter[7];
+					var blurX1 = filter[6];
+					var alpha = filter[5];
+					var color = filter[4];
+					var angle = filter[3];
+					var distance = filter[2];
+					filters.push(new openfl_filters_DropShadowFilter(distance,angle,color,alpha,blurX1,blurY1,strength,quality1,inner,knockout,hideObject));
+					break;
+				case 3:
+					var knockout1 = filter[9];
+					var inner1 = filter[8];
+					var quality2 = filter[7];
+					var strength1 = filter[6];
+					var blurY2 = filter[5];
+					var blurX2 = filter[4];
+					var alpha1 = filter[3];
+					var color1 = filter[2];
+					filters.push(new openfl_filters_GlowFilter(color1,alpha1,blurX2,blurY2,strength1,quality2,inner1,knockout1));
+					break;
+				}
+			}
+			displayObject.set_filters(filters);
+		} else {
+			displayObject.set_filters(null);
+		}
+		if(frameObject.visible != null) {
+			displayObject.set_visible(frameObject.visible);
+		}
+		if(frameObject.blendMode != null) {
+			displayObject.set_blendMode(frameObject.blendMode);
+		}
+		var tmp = frameObject.cacheAsBitmap != null;
+	}
+	,__updateFrameLabel: function() {
+		this.__currentFrameLabel = this.__symbol.frames[this.__currentFrame - 1].label;
+		if(this.__currentFrameLabel != null) {
+			this.__currentLabel = this.__currentFrameLabel;
+		} else {
+			this.__currentLabel = null;
+			var _g = 0;
+			var _g1 = this.__currentLabels;
+			while(_g < _g1.length) {
+				var label = _g1[_g];
+				++_g;
+				if(label.get_frame() < this.__currentFrame) {
+					this.__currentLabel = label.get_name();
+				} else {
+					break;
+				}
+			}
+		}
+	}
+	,get_currentFrame: function() {
+		return this.__currentFrame;
+	}
+	,get_currentFrameLabel: function() {
+		return this.__currentFrameLabel;
+	}
+	,get_currentLabel: function() {
+		return this.__currentLabel;
+	}
+	,get_currentLabels: function() {
+		return this.__currentLabels;
+	}
+	,get_framesLoaded: function() {
+		return this.__totalFrames;
+	}
+	,get_isPlaying: function() {
+		return this.__playing;
+	}
+	,get_totalFrames: function() {
+		return this.__totalFrames;
+	}
+	,__class__: openfl_display_MovieClip
+});
+var com_adrienheisch_utils_KeyboardManager = function() {
+};
+$hxClasses["com.adrienheisch.utils.KeyboardManager"] = com_adrienheisch_utils_KeyboardManager;
+com_adrienheisch_utils_KeyboardManager.__name__ = ["com","adrienheisch","utils","KeyboardManager"];
+com_adrienheisch_utils_KeyboardManager.init = function() {
+	com_adrienheisch_utils_KeyboardManager.stage = com_adrienheisch_spacewar_Main.get_instance().stage;
+	com_adrienheisch_utils_KeyboardManager.stage.addEventListener("keyDown",com_adrienheisch_utils_KeyboardManager.registerKey);
+	com_adrienheisch_utils_KeyboardManager.stage.addEventListener("keyUp",com_adrienheisch_utils_KeyboardManager.unregisterKey);
+};
+com_adrienheisch_utils_KeyboardManager.registerKey = function(pEvent) {
+	if(Lambda.indexOf(com_adrienheisch_utils_KeyboardManager.keys,pEvent.keyCode) < 0) {
+		com_adrienheisch_utils_KeyboardManager.keys.push(pEvent.keyCode);
+	}
+};
+com_adrienheisch_utils_KeyboardManager.unregisterKey = function(pEvent) {
+	com_adrienheisch_utils_KeyboardManager.keys.splice(Lambda.indexOf(com_adrienheisch_utils_KeyboardManager.keys,pEvent.keyCode),1);
+};
+com_adrienheisch_utils_KeyboardManager.stop = function() {
+	com_adrienheisch_utils_KeyboardManager.stage.removeEventListener("keyDown",com_adrienheisch_utils_KeyboardManager.registerKey);
+	com_adrienheisch_utils_KeyboardManager.stage.removeEventListener("keyUp",com_adrienheisch_utils_KeyboardManager.unregisterKey);
+	com_adrienheisch_utils_KeyboardManager.stage = null;
+};
+com_adrienheisch_utils_KeyboardManager.prototype = {
+	__class__: com_adrienheisch_utils_KeyboardManager
+};
+var com_adrienheisch_spacewar_background_BackgroundManager = function() {
+};
+$hxClasses["com.adrienheisch.spacewar.background.BackgroundManager"] = com_adrienheisch_spacewar_background_BackgroundManager;
+com_adrienheisch_spacewar_background_BackgroundManager.__name__ = ["com","adrienheisch","spacewar","background","BackgroundManager"];
+com_adrienheisch_spacewar_background_BackgroundManager.init = function() {
+	com_adrienheisch_spacewar_background_BackgroundManager.stage = com_adrienheisch_spacewar_Main.get_instance().stage;
+	com_adrienheisch_spacewar_background_BackgroundManager.stage.addChild(com_adrienheisch_spacewar_background_BackgroundContainer.get_instance());
+	com_adrienheisch_spacewar_background_BackgroundManager.drawBackground();
+};
+com_adrienheisch_spacewar_background_BackgroundManager.drawBackground = function() {
+	var lStar;
+	var i = 99;
+	while(i >= 0) {
+		var tmp = com_adrienheisch_spacewar_background_BackgroundContainer.get_instance();
+		lStar = new com_adrienheisch_spacewar_background_Star();
+		tmp.addChild(lStar);
+		lStar.set_x(com_adrienheisch_spacewar_background_BackgroundManager.stage.stageWidth * Math.random());
+		lStar.set_y(com_adrienheisch_spacewar_background_BackgroundManager.stage.stageHeight * Math.random());
+		--i;
+	}
+};
+com_adrienheisch_spacewar_background_BackgroundManager.stop = function() {
+	com_adrienheisch_spacewar_background_BackgroundContainer.get_instance().destroy();
+	com_adrienheisch_spacewar_background_BackgroundManager.stage = null;
+};
+com_adrienheisch_spacewar_background_BackgroundManager.prototype = {
+	__class__: com_adrienheisch_spacewar_background_BackgroundManager
+};
+var com_adrienheisch_spacewar_game_Ship = function() {
+	this.input = [];
+	this.color = 0;
+	this.shootTimer = 0;
+	this.turningAcceleration = 0;
+	this.turningSpeed = 0;
+	this.accelerationValue = 0;
+	this.acceleration = new openfl_geom_Point(0,0);
+	this.maxSpeed = 0;
+	this.velocity = new openfl_geom_Point(0,0);
+	openfl_display_Sprite.call(this);
+	com_adrienheisch_spacewar_game_Ship.list.push(this);
+	this.addChild(this.sprite = openfl_utils_Assets.getMovieClip("swf-lib:Ship"));
+	this.mcColor = this.sprite.getChildByName("mcColor");
+	this.mcShootPoint = this.sprite.getChildByName("mcShootPoint");
+	this.set_cacheAsBitmap(true);
+	this.health = 5;
+	this.id = Lambda.indexOf(com_adrienheisch_spacewar_game_Ship.list,this);
+	this.mcShootPoint.set_visible(false);
+	this.color = com_adrienheisch_spacewar_game_Ship.COLORS[Lambda.indexOf(com_adrienheisch_spacewar_game_Ship.list,this)];
+	var lColorTransform = new openfl_geom_ColorTransform();
+	lColorTransform.set_color(this.color);
+	this.mcColor.get_transform().set_colorTransform(lColorTransform);
+};
+$hxClasses["com.adrienheisch.spacewar.game.Ship"] = com_adrienheisch_spacewar_game_Ship;
+com_adrienheisch_spacewar_game_Ship.__name__ = ["com","adrienheisch","spacewar","game","Ship"];
+com_adrienheisch_spacewar_game_Ship.__super__ = openfl_display_Sprite;
+com_adrienheisch_spacewar_game_Ship.prototype = $extend(openfl_display_Sprite.prototype,{
+	velocity: null
+	,maxSpeed: null
+	,acceleration: null
+	,accelerationValue: null
+	,turningSpeed: null
+	,turningAcceleration: null
+	,shootTimer: null
+	,color: null
+	,input: null
+	,health: null
+	,id: null
+	,sprite: null
+	,mcColor: null
+	,mcShootPoint: null
+	,gameLoop: function() {
+		if(this.input[5] && this.shootTimer == 0) {
+			this.shoot();
+		} else if(this.shootTimer != 0) {
+			this.shootTimer -= 1;
+		}
+		this.maxSpeed = 5 * (this.input[4] ? 2 : 1);
+		this.accelerationValue = 0.2 * (this.input[4] ? 2 : 1);
+		if(!this.input[0] && !this.input[1] || this.input[0] && this.input[1]) {
+			this.turningAcceleration = 0;
+			if(this.turningSpeed > 0) {
+				this.turningSpeed -= 0.25;
+			}
+			if(this.turningSpeed < 0) {
+				this.turningSpeed += 0.25;
+			}
+		} else if(this.input[0]) {
+			this.turningAcceleration = -0.25;
+		} else if(this.input[1]) {
+			this.turningAcceleration = 0.25;
+		}
+		if(this.turningSpeed >= 3 && this.turningAcceleration > 0 || this.turningSpeed <= -3. && this.turningAcceleration < 0) {
+			this.turningAcceleration = 0;
+		}
+		this.turningSpeed += this.turningAcceleration;
+		var _g = this;
+		_g.set_rotation(_g.get_rotation() + this.turningSpeed);
+		if(this.input[2]) {
+			var tmp = this.accelerationValue;
+			var tmp1 = Math.cos(this.get_rotation() * Math.PI / 180);
+			this.acceleration.x = tmp * tmp1;
+			var tmp2 = this.accelerationValue;
+			var tmp3 = Math.sin(this.get_rotation() * Math.PI / 180);
+			this.acceleration.y = tmp2 * tmp3;
+		} else {
+			this.acceleration.setTo(0,0);
+			if(this.input[3] && com_adrienheisch_spacewar_game_Ship.moveBackAllowed) {
+				var tmp4 = this.get_rotation() * Math.PI / 180;
+				this.acceleration.x = 0.1 * -Math.cos(tmp4);
+				var tmp5 = this.get_rotation() * Math.PI / 180;
+				this.acceleration.y = 0.1 * -Math.sin(tmp5);
+			} else if(Math.abs(this.velocity.get_length()) > 0.05 && com_adrienheisch_spacewar_game_Ship.autoSlow) {
+				this.acceleration.x = 0.05 * -Math.cos(Math.atan2(this.velocity.y,this.velocity.x));
+				this.acceleration.y = 0.05 * -Math.sin(Math.atan2(this.velocity.y,this.velocity.x));
+			}
+		}
+		this.velocity.x += this.acceleration.x;
+		this.velocity.y += this.acceleration.y;
+		if(this.velocity.get_length() >= this.maxSpeed) {
+			this.velocity.x += (0.05 + this.accelerationValue) * -Math.cos(Math.atan2(this.velocity.y,this.velocity.x));
+			this.velocity.y += (0.05 + this.accelerationValue) * -Math.sin(Math.atan2(this.velocity.y,this.velocity.x));
+		}
+		if(this.get_x() <= this.get_width() / 2 && this.velocity.x < 0 || this.get_x() >= this.stage.stageWidth - this.get_width() / 2 && this.velocity.x > 0) {
+			this.velocity.x *= -1;
+		}
+		if(this.get_y() <= this.get_height() / 2 && this.velocity.y < 0 || this.get_y() >= this.stage.stageHeight - this.get_height() / 2 && this.velocity.y > 0) {
+			this.velocity.y *= -1;
+		}
+		var _g1 = this;
+		_g1.set_x(_g1.get_x() + this.velocity.x);
+		var _g2 = this;
+		_g2.set_y(_g2.get_y() + this.velocity.y);
+	}
+	,shoot: function() {
+		var lBullet;
+		this.shootTimer = 20;
+		var tmp = this.parent;
+		lBullet = new com_adrienheisch_spacewar_game_Bullet();
+		tmp.addChild(lBullet);
+		var lBulletCoords = this.localToGlobal(this.parent.globalToLocal(new openfl_geom_Point(this.mcShootPoint.get_x(),this.mcShootPoint.get_y())));
+		lBullet.parentShip = this;
+		lBullet.parentShipId = this.id;
+		lBullet.set_x(lBulletCoords.x);
+		lBullet.set_y(lBulletCoords.y);
+		lBullet.set_rotation(this.get_rotation());
+		lBullet.velocity = new openfl_geom_Point(10 * Math.cos(this.get_rotation() * Math.PI / 180),10 * Math.sin(this.get_rotation() * Math.PI / 180));
+		lBullet.set_color(this.color);
+	}
+	,destroy: function() {
+		var lExplosion;
+		var tmp = this.parent;
+		lExplosion = new com_adrienheisch_spacewar_game_Explosion();
+		tmp.addChild(lExplosion);
+		lExplosion.set_x(this.get_x());
+		lExplosion.set_y(this.get_y());
+		com_adrienheisch_spacewar_game_Ship.list.splice(Lambda.indexOf(com_adrienheisch_spacewar_game_Ship.list,this),1);
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_game_Ship
+});
+var com_adrienheisch_spacewar_game_Bullet = function() {
+	openfl_display_Sprite.call(this);
+	com_adrienheisch_spacewar_game_Bullet.list.push(this);
+	this.addChild(this.sprite = openfl_utils_Assets.getMovieClip("swf-lib:Bullet"));
+	this.set_cacheAsBitmap(true);
+};
+$hxClasses["com.adrienheisch.spacewar.game.Bullet"] = com_adrienheisch_spacewar_game_Bullet;
+com_adrienheisch_spacewar_game_Bullet.__name__ = ["com","adrienheisch","spacewar","game","Bullet"];
+com_adrienheisch_spacewar_game_Bullet.__super__ = openfl_display_Sprite;
+com_adrienheisch_spacewar_game_Bullet.prototype = $extend(openfl_display_Sprite.prototype,{
+	parentShip: null
+	,parentShipId: null
+	,velocity: null
+	,sprite: null
+	,set_color: function(pColor) {
+		var lColorTransform = new openfl_geom_ColorTransform();
+		lColorTransform.set_color(pColor);
+		this.get_transform().set_colorTransform(lColorTransform);
+		return pColor;
+	}
+	,gameLoop: function() {
+		var lShip;
+		var i = com_adrienheisch_spacewar_game_Ship.list.length - 1;
+		while(i >= 0) {
+			lShip = com_adrienheisch_spacewar_game_Ship.list[i];
+			if(lShip != this.parentShip && lShip.hitTestPoint(this.get_x(),this.get_y())) {
+				lShip.health -= 1;
+				com_adrienheisch_spacewar_game_Ship.infoList[this.parentShipId][2]++;
+				if(lShip.health <= 0) {
+					lShip.destroy();
+					com_adrienheisch_spacewar_game_Ship.infoList[this.parentShipId][1]++;
+				}
+				com_adrienheisch_spacewar_ui_Hud.get_instance().refreshInfo();
+				this.destroy();
+				return;
+			}
+			--i;
+		}
+		if(this.get_x() < -this.get_width() || this.get_x() > this.stage.stageWidth + this.get_width() || this.get_y() < -this.get_height() || this.get_y() > this.stage.stageHeight + this.get_height()) {
+			this.destroy();
+		} else {
+			var _g = this;
+			_g.set_x(_g.get_x() + this.velocity.x);
+			var _g1 = this;
+			_g1.set_y(_g1.get_y() + this.velocity.y);
+		}
+	}
+	,destroy: function() {
+		com_adrienheisch_spacewar_game_Bullet.list.splice(Lambda.indexOf(com_adrienheisch_spacewar_game_Bullet.list,this),1);
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_game_Bullet
+});
+var com_adrienheisch_spacewar_game_Explosion = function() {
+	openfl_display_Sprite.call(this);
+	com_adrienheisch_spacewar_game_Explosion.list.push(this);
+	this.addChild(this.clip = openfl_utils_Assets.getMovieClip("swf-lib:Explosion"));
+};
+$hxClasses["com.adrienheisch.spacewar.game.Explosion"] = com_adrienheisch_spacewar_game_Explosion;
+com_adrienheisch_spacewar_game_Explosion.__name__ = ["com","adrienheisch","spacewar","game","Explosion"];
+com_adrienheisch_spacewar_game_Explosion.__super__ = openfl_display_Sprite;
+com_adrienheisch_spacewar_game_Explosion.prototype = $extend(openfl_display_Sprite.prototype,{
+	clip: null
+	,gameLoop: function() {
+		if(this.clip.get_currentFrame() == this.clip.get_totalFrames()) {
+			this.destroy();
+		}
+	}
+	,destroy: function() {
+		com_adrienheisch_spacewar_game_Explosion.list.splice(Lambda.indexOf(com_adrienheisch_spacewar_game_Explosion.list,this),1);
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_game_Explosion
+});
+var com_adrienheisch_spacewar_game_GameManager = function() {
+};
+$hxClasses["com.adrienheisch.spacewar.game.GameManager"] = com_adrienheisch_spacewar_game_GameManager;
+com_adrienheisch_spacewar_game_GameManager.__name__ = ["com","adrienheisch","spacewar","game","GameManager"];
+com_adrienheisch_spacewar_game_GameManager.init = function() {
+	com_adrienheisch_spacewar_game_GameManager.stage = com_adrienheisch_spacewar_Main.get_instance().stage;
+	com_adrienheisch_spacewar_game_GameManager.stage.addChild(com_adrienheisch_spacewar_game_GameContainer.get_instance());
+};
+com_adrienheisch_spacewar_game_GameManager.startGame = function() {
+	com_adrienheisch_spacewar_game_GameManager.stage.set_focus(com_adrienheisch_spacewar_game_GameManager.stage);
+	var lShip;
+	var i = 0;
+	while(i < com_adrienheisch_spacewar_game_GameManager.nShips - com_adrienheisch_spacewar_game_GameManager.nShips % 2) {
+		var tmp = com_adrienheisch_spacewar_game_GameContainer.get_instance();
+		if(com_adrienheisch_spacewar_game_GameManager.nPlayers > i) {
+			lShip = new com_adrienheisch_spacewar_game_PlayerShip();
+		} else {
+			lShip = new com_adrienheisch_spacewar_game_AIShip();
+		}
+		tmp.addChild(lShip);
+		lShip.set_x((2 * (i % 2) + 1) * com_adrienheisch_spacewar_game_GameManager.stage.stageWidth / 4);
+		lShip.set_y((i - i % 2 + 1) * com_adrienheisch_spacewar_game_GameManager.stage.stageHeight / com_adrienheisch_spacewar_game_GameManager.nShips);
+		lShip.set_rotation(i % 2 == 0 ? 0 : 180);
+		++i;
+	}
+	if(com_adrienheisch_spacewar_game_GameManager.nShips % 2 != 0) {
+		var tmp1 = com_adrienheisch_spacewar_game_GameContainer.get_instance();
+		if(com_adrienheisch_spacewar_game_GameManager.nPlayers == com_adrienheisch_spacewar_game_GameManager.nShips) {
+			lShip = new com_adrienheisch_spacewar_game_PlayerShip();
+		} else {
+			lShip = new com_adrienheisch_spacewar_game_AIShip();
+		}
+		tmp1.addChild(lShip);
+		lShip.set_x(com_adrienheisch_spacewar_game_GameManager.stage.stageWidth / 2);
+		lShip.set_y((com_adrienheisch_spacewar_game_GameManager.nShips - 1) / 2 * com_adrienheisch_spacewar_game_GameManager.stage.stageHeight / (com_adrienheisch_spacewar_game_GameManager.nShips / 2));
+		lShip.set_rotation(-90);
+	}
+	com_adrienheisch_spacewar_ui_UIManager.startGame();
+	com_adrienheisch_spacewar_game_GameManager.stage.addEventListener("enterFrame",com_adrienheisch_spacewar_game_GameManager.gameLoop);
+};
+com_adrienheisch_spacewar_game_GameManager.gameLoop = function(pEvent) {
+	var lClass;
+	var i = com_adrienheisch_spacewar_game_GameManager.GAMELOOP_CLASSES.length - 1;
+	while(i >= 0) {
+		lClass = com_adrienheisch_spacewar_game_GameManager.GAMELOOP_CLASSES[i];
+		var j = js_Boot.__cast(lClass.list.length - 1 , Int);
+		while(j >= 0) {
+			lClass.list[j].gameLoop();
+			--j;
+		}
+		--i;
+	}
+	if(com_adrienheisch_spacewar_game_Ship.list.length <= 1) {
+		com_adrienheisch_spacewar_game_GameManager.gameOver();
+	}
+	i = com_adrienheisch_spacewar_game_GameContainer.get_instance().get_numChildren() - 1;
+	while(i >= 0) {
+		com_adrienheisch_spacewar_game_GameContainer.get_instance().getChildAt(i).set_scaleX(0.5);
+		com_adrienheisch_spacewar_game_GameContainer.get_instance().getChildAt(i).set_scaleY(0.5);
+		--i;
+	}
+};
+com_adrienheisch_spacewar_game_GameManager.gameOver = function() {
+	com_adrienheisch_spacewar_ui_UIManager.gameOver();
+};
+com_adrienheisch_spacewar_game_GameManager.destroyAllInstances = function() {
+	var lClass;
+	var i = com_adrienheisch_spacewar_game_GameManager.GAMELOOP_CLASSES.length - 1;
+	while(i >= 0) {
+		lClass = com_adrienheisch_spacewar_game_GameManager.GAMELOOP_CLASSES[i];
+		var j = js_Boot.__cast(lClass.list.length - 1 , Int);
+		while(j >= 0) {
+			lClass.list[j].destroy();
+			--j;
+		}
+		--i;
+	}
+};
+com_adrienheisch_spacewar_game_GameManager.stop = function() {
+	com_adrienheisch_spacewar_game_GameManager.stage.removeEventListener("enterFrame",com_adrienheisch_spacewar_game_GameManager.gameLoop);
+	com_adrienheisch_spacewar_game_GameManager.destroyAllInstances();
+	com_adrienheisch_spacewar_game_GameContainer.get_instance().destroy();
+	com_adrienheisch_spacewar_game_GameManager.stage = null;
+};
+com_adrienheisch_spacewar_game_GameManager.prototype = {
+	__class__: com_adrienheisch_spacewar_game_GameManager
+};
+var com_adrienheisch_spacewar_ui_UIManager = function() {
+};
+$hxClasses["com.adrienheisch.spacewar.ui.UIManager"] = com_adrienheisch_spacewar_ui_UIManager;
+com_adrienheisch_spacewar_ui_UIManager.__name__ = ["com","adrienheisch","spacewar","ui","UIManager"];
+com_adrienheisch_spacewar_ui_UIManager.init = function() {
+	com_adrienheisch_spacewar_ui_UIManager.stage = com_adrienheisch_spacewar_Main.get_instance().stage;
+	com_adrienheisch_spacewar_ui_UIManager.stage.addChild(com_adrienheisch_spacewar_ui_UIContainer.get_instance());
+	com_adrienheisch_spacewar_ui_UIManager.mainMenu();
+};
+com_adrienheisch_spacewar_ui_UIManager.mainMenu = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_menus_MainMenu.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.chooseNShips = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.chooseNPlayers = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.startGame = function() {
+	if(com_adrienheisch_spacewar_ui_Hud.get_instance() != null) {
+		com_adrienheisch_spacewar_ui_Hud.get_instance().destroy();
+	}
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_Hud.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.gameOver = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_GameOverScreen.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.stop = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().destroy();
+	com_adrienheisch_spacewar_ui_UIManager.stage = null;
+};
+com_adrienheisch_spacewar_ui_UIManager.prototype = {
+	__class__: com_adrienheisch_spacewar_ui_UIManager
+};
+var com_adrienheisch_spacewar_Main = function() {
+	openfl_display_MovieClip.call(this);
+	com_adrienheisch_spacewar_Main._instance = this;
+	com_adrienheisch_spacewar_game_Ship.infoList = [];
+	var _g = 0;
+	while(_g < 2) {
+		var i = _g++;
+		com_adrienheisch_spacewar_game_Ship.infoList.push([0,0,0]);
+	}
+	com_adrienheisch_utils_KeyboardManager.init();
+	com_adrienheisch_spacewar_background_BackgroundManager.init();
+	com_adrienheisch_spacewar_game_GameManager.init();
+	com_adrienheisch_spacewar_game_GameManager.startGame();
+};
+$hxClasses["com.adrienheisch.spacewar.Main"] = com_adrienheisch_spacewar_Main;
+com_adrienheisch_spacewar_Main.__name__ = ["com","adrienheisch","spacewar","Main"];
+com_adrienheisch_spacewar_Main.get_instance = function() {
+	return com_adrienheisch_spacewar_Main._instance;
+};
+com_adrienheisch_spacewar_Main.__super__ = openfl_display_MovieClip;
+com_adrienheisch_spacewar_Main.prototype = $extend(openfl_display_MovieClip.prototype,{
+	initApp: function() {
+		var i = 0;
+		while(i < com_adrienheisch_spacewar_Main.MANAGERS.length) {
+			com_adrienheisch_spacewar_Main.MANAGERS[i].init();
+			++i;
+		}
+	}
+	,restartApp: function() {
+		var i = 0;
+		while(i < com_adrienheisch_spacewar_Main.MANAGERS.length) {
+			com_adrienheisch_spacewar_Main.MANAGERS[i].stop();
+			++i;
+		}
+		this.initApp();
+	}
+	,__class__: com_adrienheisch_spacewar_Main
 });
 var DocumentClass = function(current) {
 	current.addChild(this);
-	com_adrienheisch_notspacewar_Main.call(this);
+	com_adrienheisch_spacewar_Main.call(this);
 	this.dispatchEvent(new openfl_events_Event("addedToStage",false,false));
 };
 $hxClasses["DocumentClass"] = DocumentClass;
 DocumentClass.__name__ = ["DocumentClass"];
-DocumentClass.__super__ = com_adrienheisch_notspacewar_Main;
-DocumentClass.prototype = $extend(com_adrienheisch_notspacewar_Main.prototype,{
+DocumentClass.__super__ = com_adrienheisch_spacewar_Main;
+DocumentClass.prototype = $extend(com_adrienheisch_spacewar_Main.prototype,{
 	__class__: DocumentClass
+});
+var Bullet5 = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[56];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["Bullet5"] = Bullet5;
+Bullet5.__name__ = ["Bullet5"];
+Bullet5.__super__ = openfl_display_MovieClip;
+Bullet5.prototype = $extend(openfl_display_MovieClip.prototype,{
+	__class__: Bullet5
+});
+var ChooseNPlayersScreen = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[53];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["ChooseNPlayersScreen"] = ChooseNPlayersScreen;
+ChooseNPlayersScreen.__name__ = ["ChooseNPlayersScreen"];
+ChooseNPlayersScreen.__super__ = openfl_display_MovieClip;
+ChooseNPlayersScreen.prototype = $extend(openfl_display_MovieClip.prototype,{
+	mcButton1: null
+	,mcButton2: null
+	,__class__: ChooseNPlayersScreen
+});
+var ChooseNShipsScreen = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[51];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["ChooseNShipsScreen"] = ChooseNShipsScreen;
+ChooseNShipsScreen.__name__ = ["ChooseNShipsScreen"];
+ChooseNShipsScreen.__super__ = openfl_display_MovieClip;
+ChooseNShipsScreen.prototype = $extend(openfl_display_MovieClip.prototype,{
+	mcButton2: null
+	,mcButton3: null
+	,mcButton4: null
+	,__class__: ChooseNShipsScreen
 });
 var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
@@ -3957,6 +4946,62 @@ EReg.prototype = {
 	}
 	,__class__: EReg
 };
+var Explosion = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[47];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["Explosion"] = Explosion;
+Explosion.__name__ = ["Explosion"];
+Explosion.__super__ = openfl_display_MovieClip;
+Explosion.prototype = $extend(openfl_display_MovieClip.prototype,{
+	__class__: Explosion
+});
+var GameOverScreen = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[31];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["GameOverScreen"] = GameOverScreen;
+GameOverScreen.__name__ = ["GameOverScreen"];
+GameOverScreen.__super__ = openfl_display_MovieClip;
+GameOverScreen.prototype = $extend(openfl_display_MovieClip.prototype,{
+	txtWinner: null
+	,__class__: GameOverScreen
+});
+var HealthBar = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[27];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["HealthBar"] = HealthBar;
+HealthBar.__name__ = ["HealthBar"];
+HealthBar.__super__ = openfl_display_MovieClip;
+HealthBar.prototype = $extend(openfl_display_MovieClip.prototype,{
+	mcMask: null
+	,mcFill: null
+	,txtInfo: null
+	,__class__: HealthBar
+});
+var Hud = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[20];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["Hud"] = Hud;
+Hud.__name__ = ["Hud"];
+Hud.__super__ = openfl_display_MovieClip;
+Hud.prototype = $extend(openfl_display_MovieClip.prototype,{
+	__class__: Hud
+});
 var HxOverrides = function() { };
 $hxClasses["HxOverrides"] = HxOverrides;
 HxOverrides.__name__ = ["HxOverrides"];
@@ -4029,6 +5074,18 @@ Lambda.array = function(it) {
 	}
 	return a;
 };
+Lambda.indexOf = function(it,v) {
+	var i = 0;
+	var v2 = $iterator(it)();
+	while(v2.hasNext()) {
+		var v21 = v2.next();
+		if(v == v21) {
+			return i;
+		}
+		++i;
+	}
+	return -1;
+};
 var _$List_ListNode = function(item,next) {
 	this.item = item;
 	this.next = next;
@@ -4074,10 +5131,20 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
+	data = "{\"name\":\"swf-lib\",\"assets\":\"aoy4:pathy22:lib%2Fswf-lib%2F54.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y22:lib%2Fswf-lib%2F56.pngR2i240R3R4R5R7R6tgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i150711R3y4:TEXTR5R8R6tgh\",\"version\":2,\"libraryArgs\":[\"lib/swf-lib/swf-lib.bin\"],\"libraryType\":\"openfl._internal.swf.SWFLiteLibrary\"}";
+	manifest = lime_utils_AssetManifest.parse(data,rootPath);
+	library = lime_utils_AssetLibrary.fromManifest(manifest);
+	lime_utils_Assets.registerLibrary("swf-lib",library);
 	data = "{\"name\":null,\"assets\":\"ah\",\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
+	library = lime_utils_Assets.getLibrary("swf-lib");
+	if(library != null) {
+		ManifestResources.preloadLibraries.push(library);
+	} else {
+		ManifestResources.preloadLibraryNames.push("swf-lib");
+	}
 	library = lime_utils_Assets.getLibrary("default");
 	if(library != null) {
 		ManifestResources.preloadLibraries.push(library);
@@ -4086,6 +5153,36 @@ ManifestResources.init = function(config) {
 	}
 };
 Math.__name__ = ["Math"];
+var NumberButton = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[49];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["NumberButton"] = NumberButton;
+NumberButton.__name__ = ["NumberButton"];
+NumberButton.__super__ = openfl_display_MovieClip;
+NumberButton.prototype = $extend(openfl_display_MovieClip.prototype,{
+	btnMenu: null
+	,txtDisplay: null
+	,__class__: NumberButton
+});
+var PlayButton = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[17];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["PlayButton"] = PlayButton;
+PlayButton.__name__ = ["PlayButton"];
+PlayButton.__super__ = openfl_display_MovieClip;
+PlayButton.prototype = $extend(openfl_display_MovieClip.prototype,{
+	btnMenu: null
+	,txtDisplay: null
+	,__class__: PlayButton
+});
 var Reflect = function() { };
 $hxClasses["Reflect"] = Reflect;
 Reflect.__name__ = ["Reflect"];
@@ -4151,6 +5248,34 @@ Reflect.makeVarArgs = function(f) {
 		return f(a);
 	};
 };
+var Ship = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[11];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["Ship"] = Ship;
+Ship.__name__ = ["Ship"];
+Ship.__super__ = openfl_display_MovieClip;
+Ship.prototype = $extend(openfl_display_MovieClip.prototype,{
+	mcColor: null
+	,mcShootPoint: null
+	,__class__: Ship
+});
+var Star = function() {
+	openfl_display_MovieClip.call(this);
+	var _this = openfl__$internal_swf_SWFLite.instances;
+	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
+	var symbol = swfLite.symbols.h[4];
+	this.__fromSymbol(swfLite,symbol);
+};
+$hxClasses["Star"] = Star;
+Star.__name__ = ["Star"];
+Star.__super__ = openfl_display_MovieClip;
+Star.prototype = $extend(openfl_display_MovieClip.prototype,{
+	__class__: Star
+});
 var Std = function() { };
 $hxClasses["Std"] = Std;
 Std.__name__ = ["Std"];
@@ -4426,6 +5551,575 @@ _$UInt_UInt_$Impl_$.toFloat = function(this1) {
 	} else {
 		return $int + 0.0;
 	}
+};
+var com_adrienheisch_spacewar_background_BackgroundContainer = function() {
+	openfl_display_MovieClip.call(this);
+	if(com_adrienheisch_spacewar_background_BackgroundContainer._instance != null) {
+		throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + "is a Singleton, please use BackgroundContainer.instance"));
+	} else {
+		com_adrienheisch_spacewar_background_BackgroundContainer._instance = this;
+	}
+};
+$hxClasses["com.adrienheisch.spacewar.background.BackgroundContainer"] = com_adrienheisch_spacewar_background_BackgroundContainer;
+com_adrienheisch_spacewar_background_BackgroundContainer.__name__ = ["com","adrienheisch","spacewar","background","BackgroundContainer"];
+com_adrienheisch_spacewar_background_BackgroundContainer.get_instance = function() {
+	if(com_adrienheisch_spacewar_background_BackgroundContainer._instance == null) {
+		com_adrienheisch_spacewar_background_BackgroundContainer._instance = new com_adrienheisch_spacewar_background_BackgroundContainer();
+	}
+	return com_adrienheisch_spacewar_background_BackgroundContainer._instance;
+};
+com_adrienheisch_spacewar_background_BackgroundContainer.__super__ = openfl_display_MovieClip;
+com_adrienheisch_spacewar_background_BackgroundContainer.prototype = $extend(openfl_display_MovieClip.prototype,{
+	destroy: function() {
+		com_adrienheisch_spacewar_background_BackgroundContainer._instance = null;
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_background_BackgroundContainer
+});
+var com_adrienheisch_spacewar_background_Star = function() {
+	openfl_display_MovieClip.call(this);
+	com_adrienheisch_spacewar_background_Star.list.push(this);
+	this.sprite = openfl_utils_Assets.getMovieClip("swf-lib:Star");
+	this.set_cacheAsBitmap(true);
+	var lScale = Math.random();
+	this.set_scaleX(lScale);
+	this.set_scaleY(lScale);
+	this.set_alpha(Math.random() * 0.5 + 0.5);
+};
+$hxClasses["com.adrienheisch.spacewar.background.Star"] = com_adrienheisch_spacewar_background_Star;
+com_adrienheisch_spacewar_background_Star.__name__ = ["com","adrienheisch","spacewar","background","Star"];
+com_adrienheisch_spacewar_background_Star.__super__ = openfl_display_MovieClip;
+com_adrienheisch_spacewar_background_Star.prototype = $extend(openfl_display_MovieClip.prototype,{
+	sprite: null
+	,destroy: function() {
+		com_adrienheisch_spacewar_background_Star.list.splice(Lambda.indexOf(com_adrienheisch_spacewar_background_Star.list,this),1);
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_background_Star
+});
+var com_adrienheisch_spacewar_game_AIShip = function() {
+	com_adrienheisch_spacewar_game_Ship.call(this);
+};
+$hxClasses["com.adrienheisch.spacewar.game.AIShip"] = com_adrienheisch_spacewar_game_AIShip;
+com_adrienheisch_spacewar_game_AIShip.__name__ = ["com","adrienheisch","spacewar","game","AIShip"];
+com_adrienheisch_spacewar_game_AIShip.__super__ = com_adrienheisch_spacewar_game_Ship;
+com_adrienheisch_spacewar_game_AIShip.prototype = $extend(com_adrienheisch_spacewar_game_Ship.prototype,{
+	target: null
+	,gameLoop: function() {
+		var lLength = com_adrienheisch_spacewar_game_Ship.list.length;
+		if(lLength > 1) {
+			var lShip;
+			var lDistances = [];
+			var lSortedDistances = [];
+			var i = lLength - 1;
+			while(i >= 0) {
+				lShip = com_adrienheisch_spacewar_game_Ship.list[i];
+				if(com_adrienheisch_spacewar_game_AIShip.movePrediction) {
+					lDistances[i] = com_adrienheisch_utils_MoreMaths.distanceBetweenPoints(this.get_x(),this.get_y(),lShip.get_x() + lShip.velocity.x * com_adrienheisch_utils_MoreMaths.distanceBetweenPoints(this.get_x(),this.get_y(),lShip.get_x(),lShip.get_y()) / 10,lShip.get_y() + lShip.velocity.y * com_adrienheisch_utils_MoreMaths.distanceBetweenPoints(this.get_x(),this.get_y(),lShip.get_x(),lShip.get_y()) / 10);
+				} else {
+					lDistances[i] = com_adrienheisch_utils_MoreMaths.distanceBetweenPoints(this.get_x(),this.get_y(),lShip.get_x(),lShip.get_y());
+				}
+				lSortedDistances[i] = lDistances[i];
+				--i;
+			}
+			lSortedDistances.sort(function(pA,pB) {
+				if(pA < pB) {
+					return -1;
+				} else {
+					return 1;
+				}
+			});
+			this.target = com_adrienheisch_spacewar_game_Ship.list[Lambda.indexOf(lDistances,lSortedDistances[1])];
+			var lDistanceToTarget = lSortedDistances[1];
+			var lAngle;
+			if(com_adrienheisch_spacewar_game_AIShip.shootPrediction) {
+				var lFutureTargetPosition = new openfl_geom_Point(this.target.get_x() + this.target.velocity.x * lDistanceToTarget / 10,this.target.get_y() + this.target.velocity.y * lDistanceToTarget / 10);
+				lAngle = Math.atan2(lFutureTargetPosition.y - this.get_y(),lFutureTargetPosition.x - this.get_x()) * com_adrienheisch_utils_MoreMaths.RAD2DEG;
+			} else {
+				lAngle = Math.atan2(this.target.get_y() - this.get_y(),this.target.get_x() - this.get_x()) * com_adrienheisch_utils_MoreMaths.RAD2DEG;
+			}
+			var lAngleDelta = com_adrienheisch_utils_MoreMaths.angleDifference(lAngle,this.get_rotation());
+			this.input[2] = true;
+			if(lAngleDelta < 0) {
+				this.input[1] = false;
+				this.input[0] = true;
+			}
+			if(lAngleDelta > 0) {
+				this.input[0] = false;
+				this.input[1] = true;
+			}
+			if(lAngleDelta > -45 && lAngleDelta < 15) {
+				if(lDistanceToTarget > 300) {
+					this.input[4] = true;
+				} else {
+					this.input[4] = false;
+				}
+				this.input[5] = true;
+			} else {
+				this.input[5] = false;
+			}
+		} else {
+			var j = this.input.length - 1;
+			while(j >= 0) {
+				this.input[j] = false;
+				--j;
+			}
+		}
+		com_adrienheisch_spacewar_game_Ship.prototype.gameLoop.call(this);
+	}
+	,destroy: function() {
+		com_adrienheisch_spacewar_game_Ship.prototype.destroy.call(this);
+	}
+	,__class__: com_adrienheisch_spacewar_game_AIShip
+});
+var com_adrienheisch_spacewar_game_GameContainer = function() {
+	openfl_display_MovieClip.call(this);
+	if(com_adrienheisch_spacewar_game_GameContainer._instance != null) {
+		throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + "is a Singleton, please use GameContainer.instance"));
+	} else {
+		com_adrienheisch_spacewar_game_GameContainer._instance = this;
+	}
+};
+$hxClasses["com.adrienheisch.spacewar.game.GameContainer"] = com_adrienheisch_spacewar_game_GameContainer;
+com_adrienheisch_spacewar_game_GameContainer.__name__ = ["com","adrienheisch","spacewar","game","GameContainer"];
+com_adrienheisch_spacewar_game_GameContainer.get_instance = function() {
+	if(com_adrienheisch_spacewar_game_GameContainer._instance == null) {
+		com_adrienheisch_spacewar_game_GameContainer._instance = new com_adrienheisch_spacewar_game_GameContainer();
+	}
+	return com_adrienheisch_spacewar_game_GameContainer._instance;
+};
+com_adrienheisch_spacewar_game_GameContainer.__super__ = openfl_display_MovieClip;
+com_adrienheisch_spacewar_game_GameContainer.prototype = $extend(openfl_display_MovieClip.prototype,{
+	destroy: function() {
+		com_adrienheisch_spacewar_game_GameContainer._instance = null;
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_game_GameContainer
+});
+var com_adrienheisch_spacewar_game_PlayerShip = function() {
+	this.controls = [];
+	com_adrienheisch_spacewar_game_Ship.call(this);
+	this.controls = com_adrienheisch_spacewar_game_PlayerShip.CONTROLS[Lambda.indexOf(com_adrienheisch_spacewar_game_Ship.list,this)];
+};
+$hxClasses["com.adrienheisch.spacewar.game.PlayerShip"] = com_adrienheisch_spacewar_game_PlayerShip;
+com_adrienheisch_spacewar_game_PlayerShip.__name__ = ["com","adrienheisch","spacewar","game","PlayerShip"];
+com_adrienheisch_spacewar_game_PlayerShip.__super__ = com_adrienheisch_spacewar_game_Ship;
+com_adrienheisch_spacewar_game_PlayerShip.prototype = $extend(com_adrienheisch_spacewar_game_Ship.prototype,{
+	controls: null
+	,gameLoop: function() {
+		var i = this.controls.length - 1;
+		while(i >= 0) {
+			this.input[i] = com_adrienheisch_utils_KeyboardManager.keys.indexOf(this.controls[i]) >= 0;
+			--i;
+		}
+		com_adrienheisch_spacewar_game_Ship.prototype.gameLoop.call(this);
+	}
+	,__class__: com_adrienheisch_spacewar_game_PlayerShip
+});
+var com_adrienheisch_spacewar_ui_GameOverScreen = function() {
+	openfl_display_MovieClip.call(this);
+	if(com_adrienheisch_spacewar_ui_GameOverScreen._instance != null) {
+		throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + "is a Singleton, please use GameOverScreen.instance"));
+	} else {
+		com_adrienheisch_spacewar_ui_GameOverScreen._instance = this;
+		if(com_adrienheisch_spacewar_game_Ship.list.length > 0) {
+			this.txtWinner.set_text("WINNER : P" + (com_adrienheisch_spacewar_game_Ship.list[0].id + 1));
+			com_adrienheisch_spacewar_game_Ship.infoList[com_adrienheisch_spacewar_game_Ship.list[0].id][0]++;
+			com_adrienheisch_spacewar_ui_Hud.get_instance().refreshInfo();
+		}
+		this.addEventListener("enterFrame",$bind(this,this.keyCheck));
+	}
+};
+$hxClasses["com.adrienheisch.spacewar.ui.GameOverScreen"] = com_adrienheisch_spacewar_ui_GameOverScreen;
+com_adrienheisch_spacewar_ui_GameOverScreen.__name__ = ["com","adrienheisch","spacewar","ui","GameOverScreen"];
+com_adrienheisch_spacewar_ui_GameOverScreen.get_instance = function() {
+	if(com_adrienheisch_spacewar_ui_GameOverScreen._instance == null) {
+		com_adrienheisch_spacewar_ui_GameOverScreen._instance = new com_adrienheisch_spacewar_ui_GameOverScreen();
+	}
+	return com_adrienheisch_spacewar_ui_GameOverScreen._instance;
+};
+com_adrienheisch_spacewar_ui_GameOverScreen.__super__ = openfl_display_MovieClip;
+com_adrienheisch_spacewar_ui_GameOverScreen.prototype = $extend(openfl_display_MovieClip.prototype,{
+	txtWinner: null
+	,keyCheck: function(pEvent) {
+		if(com_adrienheisch_utils_KeyboardManager.keys.indexOf(32) >= 0) {
+			com_adrienheisch_spacewar_game_GameManager.destroyAllInstances();
+			com_adrienheisch_spacewar_game_GameManager.startGame();
+			this.destroy();
+		}
+		if(com_adrienheisch_utils_KeyboardManager.keys.indexOf(27) >= 0) {
+			com_adrienheisch_spacewar_ui_Hud.get_instance().destroy();
+			com_adrienheisch_spacewar_Main.get_instance().restartApp();
+			this.destroy();
+		}
+	}
+	,destroy: function() {
+		this.removeEventListener("enterFrame",$bind(this,this.keyCheck));
+		com_adrienheisch_spacewar_ui_GameOverScreen._instance = null;
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_ui_GameOverScreen
+});
+var com_adrienheisch_spacewar_ui_HealthBar = function() {
+	openfl_display_Sprite.call(this);
+	com_adrienheisch_spacewar_ui_HealthBar.list.push(this);
+	this.addChild(this.sprite = openfl_utils_Assets.getMovieClip("swf-lib:HealthBar"));
+	this.mcFill = this.sprite.getChildByName("mcFill");
+	this.mcMask = this.sprite.getChildByName("mcMask");
+	this.txtInfo = js_Boot.__cast(this.sprite.getChildByName("txtInfo") , openfl_text_TextField);
+	this.initMaskWidth = this.mcMask.get_width();
+};
+$hxClasses["com.adrienheisch.spacewar.ui.HealthBar"] = com_adrienheisch_spacewar_ui_HealthBar;
+com_adrienheisch_spacewar_ui_HealthBar.__name__ = ["com","adrienheisch","spacewar","ui","HealthBar"];
+com_adrienheisch_spacewar_ui_HealthBar.__super__ = openfl_display_Sprite;
+com_adrienheisch_spacewar_ui_HealthBar.prototype = $extend(openfl_display_Sprite.prototype,{
+	ship: null
+	,initMaskWidth: null
+	,sprite: null
+	,mcFill: null
+	,mcMask: null
+	,txtInfo: null
+	,set_index: function(pIndex) {
+		this.ship = com_adrienheisch_spacewar_game_Ship.list[pIndex];
+		var lColorTransform = new openfl_geom_ColorTransform();
+		lColorTransform.set_color(com_adrienheisch_spacewar_game_Ship.COLORS[pIndex]);
+		this.mcFill.get_transform().set_colorTransform(lColorTransform);
+		this.refresh();
+		return pIndex;
+	}
+	,refresh: function() {
+		if(this.ship != null) {
+			this.mcMask.set_width(this.initMaskWidth * this.ship.health / 5);
+			this.txtInfo.set_text(com_adrienheisch_spacewar_game_Ship.infoList[this.ship.id][0] + " wins, " + com_adrienheisch_spacewar_game_Ship.infoList[this.ship.id][1] + " kills, " + com_adrienheisch_spacewar_game_Ship.infoList[this.ship.id][2] + " damage");
+		} else {
+			throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + " has no corresponding ship !"));
+		}
+	}
+	,destroy: function() {
+		com_adrienheisch_spacewar_ui_HealthBar.list.splice(Lambda.indexOf(com_adrienheisch_spacewar_ui_HealthBar.list,this),1);
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_ui_HealthBar
+});
+var com_adrienheisch_spacewar_ui_Hud = function() {
+	openfl_display_MovieClip.call(this);
+	if(com_adrienheisch_spacewar_ui_Hud._instance != null) {
+		throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + "is a Singleton, please use Hud.instance"));
+	} else {
+		com_adrienheisch_spacewar_ui_Hud._instance = this;
+		this.addChild(this.sprite = openfl_utils_Assets.getMovieClip("swf-lib:Hud"));
+		var i = com_adrienheisch_spacewar_game_Ship.list.length - 1;
+		while(i >= 0) {
+			var lBar = new com_adrienheisch_spacewar_ui_HealthBar();
+			this.addChild(lBar);
+			lBar.set_x(i % 2 == 0 ? 10 : com_adrienheisch_spacewar_Main.get_instance().stage.stageWidth - lBar.get_width() - 10);
+			lBar.set_y(Math.floor(i / 2) % 2 == 0 ? 10 : com_adrienheisch_spacewar_Main.get_instance().stage.stageHeight - lBar.get_height() - 10);
+			lBar.set_index(i);
+			--i;
+		}
+		this.addEventListener("enterFrame",$bind(this,this.refreshAlpha));
+	}
+};
+$hxClasses["com.adrienheisch.spacewar.ui.Hud"] = com_adrienheisch_spacewar_ui_Hud;
+com_adrienheisch_spacewar_ui_Hud.__name__ = ["com","adrienheisch","spacewar","ui","Hud"];
+com_adrienheisch_spacewar_ui_Hud.get_instance = function() {
+	if(com_adrienheisch_spacewar_ui_Hud._instance == null) {
+		com_adrienheisch_spacewar_ui_Hud._instance = new com_adrienheisch_spacewar_ui_Hud();
+	}
+	return com_adrienheisch_spacewar_ui_Hud._instance;
+};
+com_adrienheisch_spacewar_ui_Hud.__super__ = openfl_display_MovieClip;
+com_adrienheisch_spacewar_ui_Hud.prototype = $extend(openfl_display_MovieClip.prototype,{
+	sprite: null
+	,refreshAlpha: function(pEvent) {
+		var lChild;
+		var i = this.get_numChildren() - 1;
+		while(i >= 0) {
+			lChild = this.getChildAt(i);
+			var j = com_adrienheisch_spacewar_game_Ship.list.length - 1;
+			while(j >= 0) {
+				if(lChild.hitTestObject(com_adrienheisch_spacewar_game_Ship.list[j])) {
+					lChild.set_alpha(0.5);
+					break;
+				} else {
+					lChild.set_alpha(1);
+				}
+				--j;
+			}
+			--i;
+		}
+	}
+	,refreshInfo: function() {
+		var i = com_adrienheisch_spacewar_ui_HealthBar.list.length - 1;
+		while(i >= 0) {
+			com_adrienheisch_spacewar_ui_HealthBar.list[i].refresh();
+			--i;
+		}
+	}
+	,destroy: function() {
+		com_adrienheisch_spacewar_ui_Hud._instance = null;
+		var i = com_adrienheisch_spacewar_ui_HealthBar.list.length - 1;
+		while(i >= 0) {
+			com_adrienheisch_spacewar_ui_HealthBar.list[i].destroy();
+			--i;
+		}
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_ui_Hud
+});
+var com_adrienheisch_spacewar_ui_UIContainer = function() {
+	openfl_display_MovieClip.call(this);
+	if(com_adrienheisch_spacewar_ui_UIContainer._instance != null) {
+		throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + "is a Singleton, please use UIContainer.instance"));
+	} else {
+		com_adrienheisch_spacewar_ui_UIContainer._instance = this;
+	}
+};
+$hxClasses["com.adrienheisch.spacewar.ui.UIContainer"] = com_adrienheisch_spacewar_ui_UIContainer;
+com_adrienheisch_spacewar_ui_UIContainer.__name__ = ["com","adrienheisch","spacewar","ui","UIContainer"];
+com_adrienheisch_spacewar_ui_UIContainer.get_instance = function() {
+	if(com_adrienheisch_spacewar_ui_UIContainer._instance == null) {
+		com_adrienheisch_spacewar_ui_UIContainer._instance = new com_adrienheisch_spacewar_ui_UIContainer();
+	}
+	return com_adrienheisch_spacewar_ui_UIContainer._instance;
+};
+com_adrienheisch_spacewar_ui_UIContainer.__super__ = openfl_display_MovieClip;
+com_adrienheisch_spacewar_ui_UIContainer.prototype = $extend(openfl_display_MovieClip.prototype,{
+	destroy: function() {
+		com_adrienheisch_spacewar_ui_UIContainer._instance = null;
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_ui_UIContainer
+});
+var com_adrienheisch_spacewar_ui_buttons_CustomButton = function() {
+	openfl_display_Sprite.call(this);
+	com_adrienheisch_spacewar_ui_buttons_CustomButton.list.push(this);
+	this.txtDisplay = js_Boot.__cast(this.clip.getChildByName("txtDisplay") , openfl_text_TextField);
+	this.btnMenu = js_Boot.__cast(this.clip.getChildByName("btnMenu") , openfl_display_SimpleButton);
+	this.clip.stop();
+	this.txtDisplay.mouseEnabled = false;
+	this.btnMenu.addEventListener("click",$bind(this,this.onClick));
+};
+$hxClasses["com.adrienheisch.spacewar.ui.buttons.CustomButton"] = com_adrienheisch_spacewar_ui_buttons_CustomButton;
+com_adrienheisch_spacewar_ui_buttons_CustomButton.__name__ = ["com","adrienheisch","spacewar","ui","buttons","CustomButton"];
+com_adrienheisch_spacewar_ui_buttons_CustomButton.__super__ = openfl_display_Sprite;
+com_adrienheisch_spacewar_ui_buttons_CustomButton.prototype = $extend(openfl_display_Sprite.prototype,{
+	clip: null
+	,txtDisplay: null
+	,btnMenu: null
+	,onClick: function(pEvent) {
+		this.btnMenu.removeEventListener("click",$bind(this,this.onClick));
+	}
+	,destroy: function() {
+		com_adrienheisch_spacewar_ui_buttons_CustomButton.list.splice(Lambda.indexOf(com_adrienheisch_spacewar_ui_buttons_CustomButton.list,this),1);
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_ui_buttons_CustomButton
+});
+var com_adrienheisch_spacewar_ui_buttons_NumberButton = function() {
+	this.addChild(this.clip = openfl_utils_Assets.getMovieClip("swf-lib:NumberButton"));
+	com_adrienheisch_spacewar_ui_buttons_CustomButton.call(this);
+	if(this.get_name() != null) {
+		this.index = Std.parseInt(HxOverrides.substr(this.get_name(),-1,null));
+	} else {
+		this.index = Lambda.indexOf(com_adrienheisch_spacewar_ui_buttons_CustomButton.list,this) + 1;
+		throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + " should have an instance name (mcButton + int)."));
+	}
+	this.txtDisplay.set_text(Std.string(this.index));
+};
+$hxClasses["com.adrienheisch.spacewar.ui.buttons.NumberButton"] = com_adrienheisch_spacewar_ui_buttons_NumberButton;
+com_adrienheisch_spacewar_ui_buttons_NumberButton.__name__ = ["com","adrienheisch","spacewar","ui","buttons","NumberButton"];
+com_adrienheisch_spacewar_ui_buttons_NumberButton.__super__ = com_adrienheisch_spacewar_ui_buttons_CustomButton;
+com_adrienheisch_spacewar_ui_buttons_NumberButton.prototype = $extend(com_adrienheisch_spacewar_ui_buttons_CustomButton.prototype,{
+	index: null
+	,onClick: function(pEvent) {
+		(js_Boot.__cast(this.parent , com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu)).buttonClicked(this.index);
+	}
+	,__class__: com_adrienheisch_spacewar_ui_buttons_NumberButton
+});
+var com_adrienheisch_spacewar_ui_buttons_PlayButton = function() {
+	this.addChild(this.clip = openfl_utils_Assets.getMovieClip("swf-lib:PlayButton"));
+	com_adrienheisch_spacewar_ui_buttons_CustomButton.call(this);
+};
+$hxClasses["com.adrienheisch.spacewar.ui.buttons.PlayButton"] = com_adrienheisch_spacewar_ui_buttons_PlayButton;
+com_adrienheisch_spacewar_ui_buttons_PlayButton.__name__ = ["com","adrienheisch","spacewar","ui","buttons","PlayButton"];
+com_adrienheisch_spacewar_ui_buttons_PlayButton.__super__ = com_adrienheisch_spacewar_ui_buttons_CustomButton;
+com_adrienheisch_spacewar_ui_buttons_PlayButton.prototype = $extend(com_adrienheisch_spacewar_ui_buttons_CustomButton.prototype,{
+	index: null
+	,onClick: function(pEvent) {
+		(js_Boot.__cast(this.parent , com_adrienheisch_spacewar_ui_menus_Menu)).destroy();
+		com_adrienheisch_spacewar_ui_UIManager.chooseNShips();
+	}
+	,__class__: com_adrienheisch_spacewar_ui_buttons_PlayButton
+});
+var com_adrienheisch_spacewar_ui_menus_Menu = function() {
+	openfl_display_MovieClip.call(this);
+};
+$hxClasses["com.adrienheisch.spacewar.ui.menus.Menu"] = com_adrienheisch_spacewar_ui_menus_Menu;
+com_adrienheisch_spacewar_ui_menus_Menu.__name__ = ["com","adrienheisch","spacewar","ui","menus","Menu"];
+com_adrienheisch_spacewar_ui_menus_Menu.__super__ = openfl_display_MovieClip;
+com_adrienheisch_spacewar_ui_menus_Menu.prototype = $extend(openfl_display_MovieClip.prototype,{
+	sprite: null
+	,destroy: function() {
+		var i = com_adrienheisch_spacewar_ui_buttons_CustomButton.list.length - 1;
+		while(i >= 0) {
+			com_adrienheisch_spacewar_ui_buttons_CustomButton.list[i].destroy();
+			--i;
+		}
+		if(this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
+	,__class__: com_adrienheisch_spacewar_ui_menus_Menu
+});
+var com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu = function() {
+	com_adrienheisch_spacewar_ui_menus_Menu.call(this);
+};
+$hxClasses["com.adrienheisch.spacewar.ui.menus.NumberChoiceMenu"] = com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu;
+com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu.__name__ = ["com","adrienheisch","spacewar","ui","menus","NumberChoiceMenu"];
+com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu.__super__ = com_adrienheisch_spacewar_ui_menus_Menu;
+com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu.prototype = $extend(com_adrienheisch_spacewar_ui_menus_Menu.prototype,{
+	buttonClicked: function(pIndex) {
+		return;
+	}
+	,__class__: com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu
+});
+var com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen = function() {
+	com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu.call(this);
+	if(com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen._instance != null) {
+		throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + "is a Singleton, please use ChooseNPlayersScreen.instance"));
+	} else {
+		com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen._instance = this;
+	}
+	this.addChild(this.sprite = openfl_utils_Assets.getMovieClip("swf-lib:ChooseNPlayersScreen"));
+	this.mcButton1 = js_Boot.__cast(this.sprite.getChildByName("mcButton1") , com_adrienheisch_spacewar_ui_buttons_NumberButton);
+	this.mcButton2 = js_Boot.__cast(this.sprite.getChildByName("mcButton2") , com_adrienheisch_spacewar_ui_buttons_NumberButton);
+};
+$hxClasses["com.adrienheisch.spacewar.ui.menus.ChooseNPlayersScreen"] = com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen;
+com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen.__name__ = ["com","adrienheisch","spacewar","ui","menus","ChooseNPlayersScreen"];
+com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen.get_instance = function() {
+	if(com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen._instance == null) {
+		com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen._instance = new com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen();
+	}
+	return com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen._instance;
+};
+com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen.__super__ = com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu;
+com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen.prototype = $extend(com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu.prototype,{
+	mcButton1: null
+	,mcButton2: null
+	,buttonClicked: function(pIndex) {
+		this.destroy();
+		com_adrienheisch_spacewar_game_GameManager.nPlayers = pIndex;
+		com_adrienheisch_spacewar_game_GameManager.startGame();
+	}
+	,destroy: function() {
+		com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen._instance = null;
+		com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu.prototype.destroy.call(this);
+	}
+	,__class__: com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen
+});
+var com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen = function() {
+	com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu.call(this);
+	if(com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen._instance != null) {
+		throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + "is a Singleton, please use ChooseNShipsScreen.instance"));
+	} else {
+		com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen._instance = this;
+	}
+	this.addChild(this.sprite = openfl_utils_Assets.getMovieClip("swf-lib:ChooseNShipsScreen"));
+	this.mcButton2 = js_Boot.__cast(this.sprite.getChildByName("mcButton2") , com_adrienheisch_spacewar_ui_buttons_NumberButton);
+	this.mcButton3 = js_Boot.__cast(this.sprite.getChildByName("mcButton3") , com_adrienheisch_spacewar_ui_buttons_NumberButton);
+	this.mcButton4 = js_Boot.__cast(this.sprite.getChildByName("mcButton4") , com_adrienheisch_spacewar_ui_buttons_NumberButton);
+};
+$hxClasses["com.adrienheisch.spacewar.ui.menus.ChooseNShipsScreen"] = com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen;
+com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen.__name__ = ["com","adrienheisch","spacewar","ui","menus","ChooseNShipsScreen"];
+com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen.get_instance = function() {
+	if(com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen._instance == null) {
+		com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen._instance = new com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen();
+	}
+	return com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen._instance;
+};
+com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen.__super__ = com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu;
+com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen.prototype = $extend(com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu.prototype,{
+	mcButton2: null
+	,mcButton3: null
+	,mcButton4: null
+	,buttonClicked: function(pIndex) {
+		this.destroy();
+		com_adrienheisch_spacewar_game_GameManager.nShips = pIndex;
+		com_adrienheisch_spacewar_game_Ship.infoList = [];
+		var _g1 = 0;
+		var _g = pIndex;
+		while(_g1 < _g) {
+			var i = _g1++;
+			com_adrienheisch_spacewar_game_Ship.infoList.push([0,0,0]);
+		}
+		com_adrienheisch_spacewar_ui_UIManager.chooseNPlayers();
+	}
+	,destroy: function() {
+		com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen._instance = null;
+		com_adrienheisch_spacewar_ui_menus_NumberChoiceMenu.prototype.destroy.call(this);
+	}
+	,__class__: com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen
+});
+var com_adrienheisch_spacewar_ui_menus_MainMenu = function() {
+	com_adrienheisch_spacewar_ui_menus_Menu.call(this);
+	haxe_Log.trace("YEAH",{ fileName : "MainMenu.hx", lineNumber : 41, className : "com.adrienheisch.spacewar.ui.menus.MainMenu", methodName : "new"});
+	if(com_adrienheisch_spacewar_ui_menus_MainMenu._instance != null) {
+		throw new js__$Boot_HaxeError(new openfl_errors_Error(Std.string(this) + "is a Singleton, please use MainMenu.instance"));
+	} else {
+		com_adrienheisch_spacewar_ui_menus_MainMenu._instance = this;
+	}
+	this.addChild(this.sprite = openfl_utils_Assets.getMovieClip("swf-lib:com.adrienheisch.spacewar.ui.menus.MainMenu"));
+	this.mcPlay = js_Boot.__cast(this.sprite.getChildByName("mcPlay") , com_adrienheisch_spacewar_ui_buttons_PlayButton);
+};
+$hxClasses["com.adrienheisch.spacewar.ui.menus.MainMenu"] = com_adrienheisch_spacewar_ui_menus_MainMenu;
+com_adrienheisch_spacewar_ui_menus_MainMenu.__name__ = ["com","adrienheisch","spacewar","ui","menus","MainMenu"];
+com_adrienheisch_spacewar_ui_menus_MainMenu.get_instance = function() {
+	if(com_adrienheisch_spacewar_ui_menus_MainMenu._instance == null) {
+		com_adrienheisch_spacewar_ui_menus_MainMenu._instance = new com_adrienheisch_spacewar_ui_menus_MainMenu();
+	}
+	return com_adrienheisch_spacewar_ui_menus_MainMenu._instance;
+};
+com_adrienheisch_spacewar_ui_menus_MainMenu.__super__ = com_adrienheisch_spacewar_ui_menus_Menu;
+com_adrienheisch_spacewar_ui_menus_MainMenu.prototype = $extend(com_adrienheisch_spacewar_ui_menus_Menu.prototype,{
+	mcPlay: null
+	,destroy: function() {
+		com_adrienheisch_spacewar_ui_menus_MainMenu._instance = null;
+		com_adrienheisch_spacewar_ui_menus_Menu.prototype.destroy.call(this);
+	}
+	,__class__: com_adrienheisch_spacewar_ui_menus_MainMenu
+});
+var com_adrienheisch_utils_MoreMaths = function() {
+};
+$hxClasses["com.adrienheisch.utils.MoreMaths"] = com_adrienheisch_utils_MoreMaths;
+com_adrienheisch_utils_MoreMaths.__name__ = ["com","adrienheisch","utils","MoreMaths"];
+com_adrienheisch_utils_MoreMaths.distanceBetweenPoints = function(pX1,pY1,pX2,pY2) {
+	return Math.sqrt(Math.pow(pX1 - pX2,2) + Math.pow(pY1 - pY2,2));
+};
+com_adrienheisch_utils_MoreMaths.angleDifference = function(pAngleA,pAngleB) {
+	pAngleA *= com_adrienheisch_utils_MoreMaths.DEG2RAD;
+	pAngleB *= com_adrienheisch_utils_MoreMaths.DEG2RAD;
+	var lDifference = Math.atan2(Math.sin(pAngleA - pAngleB),Math.cos(pAngleA - pAngleB)) * com_adrienheisch_utils_MoreMaths.RAD2DEG;
+	return lDifference;
+};
+com_adrienheisch_utils_MoreMaths.prototype = {
+	__class__: com_adrienheisch_utils_MoreMaths
 };
 var haxe_StackItem = $hxClasses["haxe.StackItem"] = { __ename__ : ["haxe","StackItem"], __constructs__ : ["CFunction","Module","FilePos","Method","LocalFunction"] };
 haxe_StackItem.CFunction = ["CFunction",0];
@@ -31103,7 +32797,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 919516;
+	this.version = 119138;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -56631,536 +58325,6 @@ openfl_display_LoaderInfo.prototype = $extend(openfl_events_EventDispatcher.prot
 	}
 	,__class__: openfl_display_LoaderInfo
 });
-var openfl_display_MovieClip = function() {
-	openfl_display_Sprite.call(this);
-	this.__currentFrame = 1;
-	this.__currentLabels = [];
-	this.__totalFrames = 0;
-	this.enabled = true;
-	if(openfl_display_MovieClip.__initSymbol != null) {
-		this.__swf = openfl_display_MovieClip.__initSWF;
-		this.__symbol = openfl_display_MovieClip.__initSymbol;
-		openfl_display_MovieClip.__initSWF = null;
-		openfl_display_MovieClip.__initSymbol = null;
-		this.__fromSymbol(this.__swf,this.__symbol);
-	}
-};
-$hxClasses["openfl.display.MovieClip"] = openfl_display_MovieClip;
-openfl_display_MovieClip.__name__ = ["openfl","display","MovieClip"];
-openfl_display_MovieClip.__super__ = openfl_display_Sprite;
-openfl_display_MovieClip.prototype = $extend(openfl_display_Sprite.prototype,{
-	enabled: null
-	,__activeInstances: null
-	,__activeInstancesByFrameObjectID: null
-	,__currentFrame: null
-	,__currentFrameLabel: null
-	,__currentLabel: null
-	,__currentLabels: null
-	,__frameScripts: null
-	,__frameTime: null
-	,__lastFrameScriptEval: null
-	,__lastFrameUpdate: null
-	,__playing: null
-	,__swf: null
-	,__symbol: null
-	,__timeElapsed: null
-	,__totalFrames: null
-	,addFrameScript: function(index,method) {
-		if(index < 0) {
-			return;
-		}
-		var frame = index + 1;
-		if(method != null) {
-			if(this.__frameScripts == null) {
-				this.__frameScripts = new haxe_ds_IntMap();
-			}
-			this.__frameScripts.h[frame] = method;
-		} else if(this.__frameScripts != null) {
-			this.__frameScripts.remove(frame);
-		}
-	}
-	,gotoAndPlay: function(frame,scene) {
-		this.play();
-		this.__goto(this.__resolveFrameReference(frame));
-	}
-	,gotoAndStop: function(frame,scene) {
-		this.stop();
-		this.__goto(this.__resolveFrameReference(frame));
-	}
-	,nextFrame: function() {
-		this.stop();
-		this.__goto(this.__currentFrame + 1);
-	}
-	,play: function() {
-		if(this.__symbol == null || this.__playing || this.__totalFrames < 2) {
-			return;
-		}
-		this.__playing = true;
-		this.__frameTime = 1000 / this.__swf.frameRate | 0;
-		this.__timeElapsed = 0;
-	}
-	,prevFrame: function() {
-		this.stop();
-		this.__goto(this.__currentFrame - 1);
-	}
-	,stop: function() {
-		this.__playing = false;
-	}
-	,__enterFrame: function(deltaTime) {
-		if(this.__symbol != null && this.__playing) {
-			var nextFrame = this.__getNextFrame(deltaTime);
-			if(this.__lastFrameScriptEval == nextFrame) {
-				return;
-			}
-			if(this.__frameScripts != null) {
-				if(nextFrame < this.__currentFrame) {
-					if(!this.__evaluateFrameScripts(this.__totalFrames)) {
-						return;
-					}
-					this.__currentFrame = 1;
-				}
-				if(!this.__evaluateFrameScripts(nextFrame)) {
-					return;
-				}
-			} else {
-				this.__currentFrame = nextFrame;
-			}
-		}
-		if(this.__symbol != null && this.__currentFrame != this.__lastFrameUpdate) {
-			this.__updateFrameLabel();
-			var currentInstancesByFrameObjectID = new haxe_ds_IntMap();
-			var frame;
-			var frameData;
-			var instance;
-			var _g1 = 0;
-			var _g = this.__currentFrame;
-			while(_g1 < _g) {
-				var i = _g1++;
-				frame = i + 1;
-				frameData = this.__symbol.frames[i];
-				if(frameData.objects == null) {
-					continue;
-				}
-				var _g2 = 0;
-				var _g3 = frameData.objects;
-				while(_g2 < _g3.length) {
-					var frameObject = _g3[_g2];
-					++_g2;
-					var _g4 = frameObject.type;
-					switch(_g4[1]) {
-					case 0:
-						instance = this.__activeInstancesByFrameObjectID.get(frameObject.id);
-						if(instance != null) {
-							currentInstancesByFrameObjectID.h[frameObject.id] = instance;
-							this.__updateDisplayObject(instance.displayObject,frameObject);
-						}
-						break;
-					case 1:
-						instance = currentInstancesByFrameObjectID.h[frameObject.id];
-						if(instance != null && instance.displayObject != null) {
-							this.__updateDisplayObject(instance.displayObject,frameObject);
-						}
-						break;
-					case 2:
-						currentInstancesByFrameObjectID.remove(frameObject.id);
-						break;
-					}
-				}
-			}
-			var currentInstances = [];
-			var currentMasks = [];
-			var instance1 = currentInstancesByFrameObjectID.iterator();
-			while(instance1.hasNext()) {
-				var instance2 = instance1.next();
-				if(currentInstances.indexOf(instance2) == -1) {
-					currentInstances.push(instance2);
-					if(instance2.clipDepth > 0) {
-						currentMasks.push(instance2);
-					}
-				}
-			}
-			currentInstances.sort($bind(this,this.__sortDepths));
-			var existingChild;
-			var targetDepth;
-			var targetChild;
-			var child;
-			var maskApplied;
-			var _g11 = 0;
-			var _g5 = currentInstances.length;
-			while(_g11 < _g5) {
-				var i1 = _g11++;
-				existingChild = this.__children[i1];
-				instance = currentInstances[i1];
-				targetDepth = instance.depth;
-				targetChild = instance.displayObject;
-				if(existingChild != targetChild) {
-					child = targetChild;
-					this.addChildAt(targetChild,i1);
-				} else {
-					child = this.__children[i1];
-				}
-				maskApplied = false;
-				var _g21 = 0;
-				while(_g21 < currentMasks.length) {
-					var mask = currentMasks[_g21];
-					++_g21;
-					if(targetDepth > mask.depth && targetDepth <= mask.clipDepth) {
-						child.set_mask(mask.displayObject);
-						maskApplied = true;
-						break;
-					}
-				}
-				if(currentMasks.length > 0 && !maskApplied && child.get_mask() != null) {
-					child.set_mask(null);
-				}
-			}
-			var child1;
-			var i2 = currentInstances.length;
-			var length = this.__children.length;
-			while(i2 < length) {
-				child1 = this.__children[i2];
-				var _g6 = 0;
-				var _g12 = this.__activeInstances;
-				while(_g6 < _g12.length) {
-					var instance3 = _g12[_g6];
-					++_g6;
-					if(instance3.displayObject == child1) {
-						this.removeChild(child1);
-						--i2;
-						--length;
-					}
-				}
-				++i2;
-			}
-			this.__lastFrameUpdate = this.__currentFrame;
-		}
-		openfl_display_Sprite.prototype.__enterFrame.call(this,deltaTime);
-	}
-	,__evaluateFrameScripts: function(advanceToFrame) {
-		var _g1 = this.__currentFrame;
-		var _g = advanceToFrame + 1;
-		while(_g1 < _g) {
-			var frame = _g1++;
-			if(frame == this.__lastFrameScriptEval) {
-				continue;
-			}
-			this.__lastFrameScriptEval = frame;
-			this.__currentFrame = frame;
-			if(this.__frameScripts.h.hasOwnProperty(frame)) {
-				var script = this.__frameScripts.h[frame];
-				script();
-				if(this.__currentFrame != frame) {
-					return false;
-				}
-			}
-			if(!this.__playing) {
-				break;
-			}
-		}
-		return true;
-	}
-	,__fromSymbol: function(swf,symbol) {
-		var _gthis = this;
-		if(this.__activeInstances != null) {
-			return;
-		}
-		this.__swf = swf;
-		this.__symbol = symbol;
-		this.__activeInstances = [];
-		this.__activeInstancesByFrameObjectID = new haxe_ds_IntMap();
-		this.__currentFrame = 1;
-		this.__lastFrameScriptEval = -1;
-		this.__lastFrameUpdate = -1;
-		this.__totalFrames = this.__symbol.frames.length;
-		var frame;
-		var frameData;
-		var _g1 = 0;
-		var _g = this.__symbol.frames.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			frame = i + 1;
-			frameData = this.__symbol.frames[i];
-			if(frameData.label != null) {
-				this.__currentLabels.push(new openfl_display_FrameLabel(frameData.label,i + 1));
-			}
-			if(frameData.script != null) {
-				if(this.__frameScripts == null) {
-					this.__frameScripts = new haxe_ds_IntMap();
-				}
-				this.__frameScripts.h[frame] = frameData.script;
-			} else if(frameData.scriptSource != null) {
-				if(this.__frameScripts == null) {
-					this.__frameScripts = new haxe_ds_IntMap();
-				}
-				try {
-					var script = [eval("(function(){" + frameData.scriptSource + "})")];
-					var wrapper = (function(script1) {
-						return function() {
-							try {
-								script1[0].call(_gthis);
-							} catch( e ) {
-								haxe_CallStack.lastException = e;
-								if (e instanceof js__$Boot_HaxeError) e = e.val;
-								haxe_Log.trace("Error evaluating frame script\n " + Std.string(e) + "\n" + haxe_CallStack.exceptionStack().map((function() {
-									return function(a) {
-										return a[2];
-									};
-								})()).join("\n") + "\n" + Std.string(e.stack) + "\n" + script1[0].toString(),{ fileName : "MovieClip.hx", lineNumber : 503, className : "openfl.display.MovieClip", methodName : "__fromSymbol"});
-							}
-						};
-					})(script);
-					this.__frameScripts.h[frame] = wrapper;
-				} catch( e1 ) {
-					haxe_CallStack.lastException = e1;
-					if(this.__symbol.className != null) {
-						lime_utils_Log.warn("Unable to evaluate frame script source for symbol \"" + this.__symbol.className + "\" frame " + frame + "\n" + frameData.scriptSource,{ fileName : "MovieClip.hx", lineNumber : 519, className : "openfl.display.MovieClip", methodName : "__fromSymbol"});
-					} else {
-						lime_utils_Log.warn("Unable to evaluate frame script source:\n" + frameData.scriptSource,{ fileName : "MovieClip.hx", lineNumber : 523, className : "openfl.display.MovieClip", methodName : "__fromSymbol"});
-					}
-				}
-			}
-		}
-		var frame1;
-		var frameData1;
-		var instance;
-		var duplicate;
-		var symbol1;
-		var displayObject;
-		var _g11 = 0;
-		var _g2 = this.__totalFrames;
-		while(_g11 < _g2) {
-			var i1 = _g11++;
-			frame1 = i1 + 1;
-			frameData1 = this.__symbol.frames[i1];
-			if(frameData1.objects == null) {
-				continue;
-			}
-			var _g21 = 0;
-			var _g3 = frameData1.objects;
-			while(_g21 < _g3.length) {
-				var frameObject = _g3[_g21];
-				++_g21;
-				if(frameObject.type == openfl__$internal_timeline_FrameObjectType.CREATE) {
-					if(this.__activeInstancesByFrameObjectID.h.hasOwnProperty(frameObject.id)) {
-						continue;
-					} else {
-						instance = null;
-						duplicate = false;
-						var _g4 = 0;
-						var _g5 = this.__activeInstances;
-						while(_g4 < _g5.length) {
-							var activeInstance = _g5[_g4];
-							++_g4;
-							if(activeInstance.displayObject != null && activeInstance.characterID == frameObject.symbol && activeInstance.depth == frameObject.depth) {
-								instance = activeInstance;
-								duplicate = true;
-								break;
-							}
-						}
-					}
-					if(instance == null) {
-						symbol1 = this.__swf.symbols.h[frameObject.symbol];
-						if(symbol1 != null) {
-							displayObject = symbol1.__createObject(this.__swf);
-							if(displayObject != null) {
-								displayObject.parent = this;
-								displayObject.stage = this.stage;
-								instance = new openfl_display__$MovieClip_FrameSymbolInstance(frame1,frameObject.id,frameObject.symbol,frameObject.depth,displayObject,frameObject.clipDepth);
-							}
-						}
-					}
-					if(instance != null) {
-						this.__activeInstancesByFrameObjectID.h[frameObject.id] = instance;
-						if(!duplicate) {
-							this.__activeInstances.push(instance);
-							this.__updateDisplayObject(instance.displayObject,frameObject);
-						}
-					}
-				}
-			}
-		}
-		if(this.__totalFrames > 1) {
-			this.play();
-		}
-		this.__enterFrame(0);
-		var _g6 = 0;
-		var _g12 = Type.getInstanceFields(js_Boot.getClass(this));
-		while(_g6 < _g12.length) {
-			var field = _g12[_g6];
-			++_g6;
-			var _g22 = 0;
-			var _g31 = this.__children;
-			while(_g22 < _g31.length) {
-				var child = _g31[_g22];
-				++_g22;
-				if(child.get_name() == field) {
-					this[field] = child;
-				}
-			}
-		}
-	}
-	,__getNextFrame: function(deltaTime) {
-		this.__timeElapsed += deltaTime;
-		var nextFrame = this.__currentFrame + Math.floor(this.__timeElapsed / this.__frameTime);
-		if(nextFrame < 1) {
-			nextFrame = 1;
-		}
-		if(nextFrame > this.__totalFrames) {
-			nextFrame = Math.floor((nextFrame - 1) % this.__totalFrames) + 1;
-		}
-		this.__timeElapsed %= this.__frameTime;
-		return nextFrame;
-	}
-	,__goto: function(frame) {
-		if(this.__symbol == null) {
-			return;
-		}
-		if(frame < 1) {
-			frame = 1;
-		} else if(frame > this.__totalFrames) {
-			frame = this.__totalFrames;
-		}
-		this.__currentFrame = frame;
-		this.__enterFrame(0);
-	}
-	,__resolveFrameReference: function(frame) {
-		if(typeof(frame) == "number" && ((frame | 0) === frame)) {
-			return frame;
-		} else if(typeof(frame) == "string") {
-			var label = frame;
-			var _g = 0;
-			var _g1 = this.__currentLabels;
-			while(_g < _g1.length) {
-				var frameLabel = _g1[_g];
-				++_g;
-				if(frameLabel.get_name() == label) {
-					return frameLabel.get_frame();
-				}
-			}
-			throw new js__$Boot_HaxeError(new openfl_errors_ArgumentError("Error #2109: Frame label " + label + " not found in scene."));
-		} else {
-			throw new js__$Boot_HaxeError("Invalid type for frame " + Type.getClassName(frame));
-		}
-	}
-	,__sortDepths: function(a,b) {
-		return a.depth - b.depth;
-	}
-	,__stopAllMovieClips: function() {
-		openfl_display_Sprite.prototype.__stopAllMovieClips.call(this);
-		this.stop();
-	}
-	,__updateDisplayObject: function(displayObject,frameObject) {
-		if(displayObject == null) {
-			return;
-		}
-		if(frameObject.name != null) {
-			displayObject.set_name(frameObject.name);
-		}
-		if(frameObject.matrix != null) {
-			displayObject.get_transform().set_matrix(frameObject.matrix);
-		}
-		if(frameObject.colorTransform != null) {
-			displayObject.get_transform().set_colorTransform(frameObject.colorTransform);
-		}
-		if(frameObject.filters != null) {
-			var filters = [];
-			var _g = 0;
-			var _g1 = frameObject.filters;
-			while(_g < _g1.length) {
-				var filter = _g1[_g];
-				++_g;
-				switch(filter[1]) {
-				case 0:
-					var quality = filter[4];
-					var blurY = filter[3];
-					var blurX = filter[2];
-					filters.push(new openfl_filters_BlurFilter(blurX,blurY,quality));
-					break;
-				case 1:
-					var matrix = filter[2];
-					filters.push(new openfl_filters_ColorMatrixFilter(matrix));
-					break;
-				case 2:
-					var hideObject = filter[12];
-					var knockout = filter[11];
-					var inner = filter[10];
-					var quality1 = filter[9];
-					var strength = filter[8];
-					var blurY1 = filter[7];
-					var blurX1 = filter[6];
-					var alpha = filter[5];
-					var color = filter[4];
-					var angle = filter[3];
-					var distance = filter[2];
-					filters.push(new openfl_filters_DropShadowFilter(distance,angle,color,alpha,blurX1,blurY1,strength,quality1,inner,knockout,hideObject));
-					break;
-				case 3:
-					var knockout1 = filter[9];
-					var inner1 = filter[8];
-					var quality2 = filter[7];
-					var strength1 = filter[6];
-					var blurY2 = filter[5];
-					var blurX2 = filter[4];
-					var alpha1 = filter[3];
-					var color1 = filter[2];
-					filters.push(new openfl_filters_GlowFilter(color1,alpha1,blurX2,blurY2,strength1,quality2,inner1,knockout1));
-					break;
-				}
-			}
-			displayObject.set_filters(filters);
-		} else {
-			displayObject.set_filters(null);
-		}
-		if(frameObject.visible != null) {
-			displayObject.set_visible(frameObject.visible);
-		}
-		if(frameObject.blendMode != null) {
-			displayObject.set_blendMode(frameObject.blendMode);
-		}
-		var tmp = frameObject.cacheAsBitmap != null;
-	}
-	,__updateFrameLabel: function() {
-		this.__currentFrameLabel = this.__symbol.frames[this.__currentFrame - 1].label;
-		if(this.__currentFrameLabel != null) {
-			this.__currentLabel = this.__currentFrameLabel;
-		} else {
-			this.__currentLabel = null;
-			var _g = 0;
-			var _g1 = this.__currentLabels;
-			while(_g < _g1.length) {
-				var label = _g1[_g];
-				++_g;
-				if(label.get_frame() < this.__currentFrame) {
-					this.__currentLabel = label.get_name();
-				} else {
-					break;
-				}
-			}
-		}
-	}
-	,get_currentFrame: function() {
-		return this.__currentFrame;
-	}
-	,get_currentFrameLabel: function() {
-		return this.__currentFrameLabel;
-	}
-	,get_currentLabel: function() {
-		return this.__currentLabel;
-	}
-	,get_currentLabels: function() {
-		return this.__currentLabels;
-	}
-	,get_framesLoaded: function() {
-		return this.__totalFrames;
-	}
-	,get_isPlaying: function() {
-		return this.__playing;
-	}
-	,get_totalFrames: function() {
-		return this.__totalFrames;
-	}
-	,__class__: openfl_display_MovieClip
-});
 var openfl_display__$MovieClip_FrameSymbolInstance = function(initFrame,initFrameObjectID,characterID,depth,displayObject,clipDepth) {
 	this.initFrame = initFrame;
 	this.initFrameObjectID = initFrameObjectID;
@@ -70782,6 +71946,43 @@ openfl_display_DisplayObject.__tempStack = new lime_utils_ObjectPool(function() 
 },function(stack) {
 	stack.data.set_length(0);
 });
+com_adrienheisch_utils_KeyboardManager.keys = [];
+com_adrienheisch_spacewar_game_Ship.list = [];
+com_adrienheisch_spacewar_game_Ship.moveBackAllowed = false;
+com_adrienheisch_spacewar_game_Ship.autoSlow = true;
+com_adrienheisch_spacewar_game_Ship.COLORS = [16711680,39423,65280,16777215];
+com_adrienheisch_spacewar_game_Ship.MAX_HEALTH = 5;
+com_adrienheisch_spacewar_game_Ship.MAX_TURNING_SPEED = 3;
+com_adrienheisch_spacewar_game_Ship.TURNING_ACCELERATION_VALUE = 0.25;
+com_adrienheisch_spacewar_game_Ship.BASE_MAX_SPEED = 5;
+com_adrienheisch_spacewar_game_Ship.BASE_ACCELERATION = 0.2;
+com_adrienheisch_spacewar_game_Ship.BRAKE = 0.1;
+com_adrienheisch_spacewar_game_Ship.SELF_BRAKE = 0.05;
+com_adrienheisch_spacewar_game_Ship.BOOST_MULT = 2;
+com_adrienheisch_spacewar_game_Ship.SHOOT_COOLDOWN = 20;
+com_adrienheisch_spacewar_game_Bullet.list = [];
+com_adrienheisch_spacewar_game_Bullet.DAMAGE = 1;
+com_adrienheisch_spacewar_game_Bullet.SPEED = 10;
+com_adrienheisch_spacewar_game_Explosion.list = [];
+com_adrienheisch_spacewar_game_GameManager.nShips = 2;
+com_adrienheisch_spacewar_game_GameManager.nPlayers = 1;
+com_adrienheisch_spacewar_game_GameManager.aiMovePrediction = true;
+com_adrienheisch_spacewar_game_GameManager.aiShootPrediction = true;
+com_adrienheisch_spacewar_game_GameManager.shipMoveBackAllowed = false;
+com_adrienheisch_spacewar_game_GameManager.shipAutoSlow = true;
+com_adrienheisch_spacewar_game_GameManager.GAMELOOP_CLASSES = [com_adrienheisch_spacewar_game_Ship,com_adrienheisch_spacewar_game_Bullet,com_adrienheisch_spacewar_game_Explosion];
+com_adrienheisch_spacewar_game_GameManager.SHIPS_PER_LINE = 2;
+com_adrienheisch_spacewar_Main.MANAGERS = [com_adrienheisch_utils_KeyboardManager,com_adrienheisch_spacewar_background_BackgroundManager,com_adrienheisch_spacewar_game_GameManager,com_adrienheisch_spacewar_ui_UIManager];
+com_adrienheisch_spacewar_background_Star.list = [];
+com_adrienheisch_spacewar_game_AIShip.movePrediction = true;
+com_adrienheisch_spacewar_game_AIShip.shootPrediction = true;
+com_adrienheisch_spacewar_game_AIShip.DISTANCE_BEFORE_ACCELERATION = 300;
+com_adrienheisch_spacewar_game_PlayerShip.CONTROLS = [[81,68,90,83,84,89],[37,39,38,40,98,99]];
+com_adrienheisch_spacewar_ui_HealthBar.list = [];
+com_adrienheisch_spacewar_ui_HealthBar.a = 0;
+com_adrienheisch_spacewar_ui_buttons_CustomButton.list = [];
+com_adrienheisch_utils_MoreMaths.RAD2DEG = 180 / Math.PI;
+com_adrienheisch_utils_MoreMaths.DEG2RAD = Math.PI / 180;
 haxe_Serializer.USE_CACHE = false;
 haxe_Serializer.USE_ENUM_INDEX = false;
 haxe_Serializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";

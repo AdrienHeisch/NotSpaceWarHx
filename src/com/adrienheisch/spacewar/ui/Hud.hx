@@ -1,11 +1,13 @@
 package com.adrienheisch.spacewar.ui;
 
-import flash.errors.Error;
+import openfl.Assets;
+import openfl.display.Sprite;
+import openfl.errors.Error;
 import com.adrienheisch.spacewar.Main;
 import com.adrienheisch.spacewar.game.Ship;
-import flash.display.DisplayObject;
-import flash.display.MovieClip;
-import flash.events.Event;
+import openfl.display.DisplayObject;
+import openfl.display.MovieClip;
+import openfl.events.Event;
 
 /**
 	 * ...
@@ -33,6 +35,8 @@ class Hud extends MovieClip
         }
         return _instance;
     }
+	
+	public var sprite:Sprite;
     
     public function new()
     {
@@ -45,6 +49,8 @@ class Hud extends MovieClip
         else
         {
             _instance = this;
+			
+			addChild(sprite = Assets.getMovieClip("swf-lib:Hud"));
             
             var i = Ship.list.length - 1;
             while (i >= 0)

@@ -2,9 +2,11 @@ package com.adrienheisch.spacewar;
 
 import com.adrienheisch.spacewar.background.BackgroundManager;
 import com.adrienheisch.spacewar.game.GameManager;
+import com.adrienheisch.spacewar.game.Ship;
 import com.adrienheisch.spacewar.ui.UIManager;
 import com.adrienheisch.utils.KeyboardManager;
-import flash.display.MovieClip;
+import openfl.Assets;
+import openfl.display.MovieClip;
 
 /**
 	 * ...
@@ -29,7 +31,16 @@ class Main extends MovieClip
         
         _instance = this;
         
-        initApp();
+        //initApp();
+		Ship.infoList = [];
+        for (i in 0...2)
+        {
+            Ship.infoList.push([0, 0, 0]);
+        }
+		KeyboardManager.init();
+		BackgroundManager.init();
+		GameManager.init();
+		GameManager.startGame();
     }
     
     public function initApp() : Void

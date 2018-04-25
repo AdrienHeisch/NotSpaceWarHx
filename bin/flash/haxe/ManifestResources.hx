@@ -53,12 +53,19 @@ import sys.FileSystem;
 		
 		var data, manifest, library;
 		
+		data = '{"name":"swf-lib","assets":"ah","version":2,"libraryArgs":["lib/swf-lib/swf-lib.swf"],"libraryType":"openfl._internal.swf.SWFLibrary"}';
+		manifest = AssetManifest.parse (data, rootPath);
+		library = AssetLibrary.fromManifest (manifest);
+		Assets.registerLibrary ("swf-lib", library);
 		data = '{"name":null,"assets":"ah","version":2,"libraryArgs":[],"libraryType":null}';
 		manifest = AssetManifest.parse (data, rootPath);
 		library = AssetLibrary.fromManifest (manifest);
 		Assets.registerLibrary ("default", library);
 		
 		
+		library = Assets.getLibrary ("swf-lib");
+		if (library != null) preloadLibraries.push (library);
+		else preloadLibraryNames.push ("swf-lib");
 		library = Assets.getLibrary ("default");
 		if (library != null) preloadLibraries.push (library);
 		else preloadLibraryNames.push ("default");
@@ -73,11 +80,13 @@ import sys.FileSystem;
 #if !display
 #if flash
 
+@:keep @:bind #if display private #end class __ASSET__lib_swf_lib_json extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__manifest_default_json extends flash.utils.ByteArray { }
 
 
 #elseif (desktop || cpp)
 
+@:file("") #if display private #end class __ASSET__lib_swf_lib_json extends haxe.io.Bytes {}
 @:file("") #if display private #end class __ASSET__manifest_default_json extends haxe.io.Bytes {}
 
 
