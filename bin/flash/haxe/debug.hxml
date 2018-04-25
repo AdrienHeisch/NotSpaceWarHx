@@ -1,0 +1,24 @@
+-main ApplicationMain 
+--macro openfl._internal.utils.ExtraParams.include()
+-cp D:/Programmes/HaxeToolkit/haxe/lib/openfl/7,1,2/src
+-D openfl=7.1.2
+--macro lime.Lib.extraParams()
+-cp D:/Programmes/HaxeToolkit/haxe/lib/lime/6,2,0
+-D lime=6.2.0
+-cp src
+-cp D:/Programmes/HaxeToolkit/haxe/lib/openfl/7,1,2/src/externs/core/flash
+-cp D:/Programmes/HaxeToolkit/haxe/lib/openfl/7,1,2/src/externs/core/openfl
+-D native-trace
+-D tools=6.2.0
+-D flash-use-stage
+-D no-compilation
+-D openfl-flash
+-D ANDROID_NDK=D:\Programmes\Android\NDK\build\ndk-build.cmd
+-D fdb
+-D web
+-cp bin/flash
+-swf-lib obj/assets.swf
+-swf-version 17
+-swf bin/flash/bin/NotSpaceWar.swf
+-cp bin/flash/haxe
+-debug

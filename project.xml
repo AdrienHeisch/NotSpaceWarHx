@@ -3,11 +3,11 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="NotSpaceWar" package="com.adrienheisch.notspacewar" version="1.0.0" company="Adrien Heisch" />
+	<meta title="NotSpaceWar" package="com.adrienheisch.spacewar" version="1.0.0" company="Adrien Heisch" />
 	<template path="bin/html5/bin/index.html" rename="index.html" if="html5" />
 	
 	<!-- output -->
-	<app main="com.adrienheisch.notspacewar.Main" file="NotSpaceWar" path="bin" />
+	<app main="com.adrienheisch.spacewar.Main" file="NotSpaceWar" path="bin" />
 	
 	<window background="#000000" fps="60" />
 	<window width="1280" height="720" unless="mobile" />
