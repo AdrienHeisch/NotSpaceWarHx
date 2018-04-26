@@ -1,12 +1,11 @@
 package com.adrienheisch.spacewar.game;
 
 import com.adrienheisch.spacewar.game.Explosion;
-import flash.display.DisplayObject;
 import openfl.Assets;
-import openfl.display.MovieClip;
+import openfl.display.DisplayObject;
+import openfl.display.Sprite;
 import openfl.geom.ColorTransform;
 import openfl.geom.Point;
-import openfl.display.Sprite;
 
 /**
 	 * ...
@@ -60,14 +59,14 @@ class Ship extends Sprite
 		mcColor = sprite.getChildByName("mcColor");
 		mcShootPoint = sprite.getChildByName("mcShootPoint");
 
-		cacheAsBitmap = true;
+		//cacheAsBitmap = true;
 
 		health = MAX_HEALTH;
 		id = Lambda.indexOf(list, this);
 
 		mcShootPoint.visible = false;
 
-		color = COLORS[Lambda.indexOf(list, this)];
+		color = COLORS[id];
 		var lColorTransform : ColorTransform = new ColorTransform();
 		lColorTransform.color = color;
 		mcColor.transform.colorTransform = lColorTransform;

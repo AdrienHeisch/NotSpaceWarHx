@@ -19,6 +19,7 @@
 -D html5
 -D web
 --remap flash:openfl
+-dce std
 HealthBar
 ChooseNPlayersScreen
 ChooseNShipsScreen

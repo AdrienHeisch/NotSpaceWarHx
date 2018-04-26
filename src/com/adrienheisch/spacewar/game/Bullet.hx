@@ -13,7 +13,6 @@ import openfl.geom.Point;
 class Bullet extends Sprite
 {
     public var color(never, set) : Int;
-
     
     public static var list : Array<Bullet> = new Array<Bullet>();
     

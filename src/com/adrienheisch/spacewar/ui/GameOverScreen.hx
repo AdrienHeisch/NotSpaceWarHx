@@ -1,5 +1,7 @@
 package com.adrienheisch.spacewar.ui;
 
+import flash.display.Sprite;
+import openfl.Assets;
 import openfl.errors.Error;
 import com.adrienheisch.spacewar.Main;
 import com.adrienheisch.spacewar.background.BackgroundContainer;
@@ -39,6 +41,7 @@ class GameOverScreen extends MovieClip
         return _instance;
     }
     
+	public var sprite:Sprite;
     public var txtWinner : TextField;
     
     public function new()
@@ -52,6 +55,10 @@ class GameOverScreen extends MovieClip
         else
         {
             _instance = this;
+			
+			addChild(sprite = Assets.getMovieClip("swf-lib:GameOverScreen"));
+			txtWinner = cast(sprite.getChildByName("txtWinner"));
+			
             if (Ship.list.length > 0)
             {
                 txtWinner.text = "WINNER : P" + (Ship.list[0].id + 1);

@@ -4,11 +4,7 @@ import com.adrienheisch.spacewar.ui.UIManager;
 import com.adrienheisch.spacewar.ui.buttons.CustomButton;
 import com.adrienheisch.spacewar.ui.menus.Menu;
 import openfl.Assets;
-import openfl.display.MovieClip;
-import openfl.display.SimpleButton;
 import openfl.events.Event;
-import openfl.events.MouseEvent;
-import openfl.text.TextField;
 
 /**
 	 * ...
@@ -19,14 +15,14 @@ class PlayButton extends CustomButton
     public var index : Int;
     public function new()
     {
-		addChild(clip = Assets.getMovieClip("swf-lib:PlayButton"));
-		
         super();
+		
+		addChild(clip = Assets.getMovieClip("swf-lib:PlayButton"));
     }
     
-    override private function onClick(pEvent : Event) : Void
+    override public function onClick(pEvent : Event) : Void
     {
-        cast((parent), Menu).destroy();
+        cast(UIContainer.instance.getChildAt(0), Menu).destroy();
         UIManager.chooseNShips();
     }
 }

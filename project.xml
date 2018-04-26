@@ -21,7 +21,7 @@
 	<assets path="assets/img" rename="img" />
 	<library path="assets/swf/NotSpaceWar.swf" id="swf-lib" preload="true" />
 	
-	<!-- optimize output
-	<haxeflag name="-dce full" /> -->
+	<!-- optimize output -->
+	<haxeflag name="-dce std" />
 	
 </project>

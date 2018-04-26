@@ -2,6 +2,7 @@ package com.adrienheisch.spacewar.ui.menus;
 
 import flash.display.Sprite;
 import openfl.Assets;
+import openfl.display.MovieClip;
 import openfl.errors.Error;
 import com.adrienheisch.spacewar.ui.buttons.PlayButton;
 
@@ -37,8 +38,6 @@ class MainMenu extends Menu
     public function new()
     {
         super();
-		
-		trace('YEAH');
         
         if (_instance != null)
         {
@@ -49,9 +48,11 @@ class MainMenu extends Menu
             _instance = this;
         }
 		
-		addChild(sprite = Assets.getMovieClip("swf-lib:com.adrienheisch.spacewar.ui.menus.MainMenu"));
+		addChild(sprite = Assets.getMovieClip("swf-lib:MainMenu"));
 		
-		mcPlay = cast(sprite.getChildByName("mcPlay"), PlayButton);
+		mcPlay = new PlayButton();
+		mcPlay.clip = cast(sprite.getChildByName("mcPlay"), MovieClip);
+		mcPlay.init();
     }
     
     /**

@@ -24,13 +24,17 @@ class CustomButton extends Sprite
         super();
         
         list.push(this);
-		
+	}
+	
+	public function init(): Void
+	{
 		txtDisplay = cast(clip.getChildByName("txtDisplay"), TextField);
 		btnMenu = cast(clip.getChildByName("btnMenu"), SimpleButton);
 		
         clip.stop();
         txtDisplay.mouseEnabled = false;
         btnMenu.addEventListener(MouseEvent.CLICK, onClick);
+		trace('ok');
 	}
     
     private function onClick(pEvent : Event) : Void
