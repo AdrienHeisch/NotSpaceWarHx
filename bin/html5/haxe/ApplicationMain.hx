@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "7",
+			build: "8",
 			company: "Adrien Heisch",
 			file: "NotSpaceWar",
 			fps: 60,

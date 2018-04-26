@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "NotSpaceWar";
-	var config = { build : "7", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.spacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
+	var config = { build : "8", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.spacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -4676,6 +4676,7 @@ com_adrienheisch_spacewar_game_GameManager.startGame = function() {
 		lShip.set_y((com_adrienheisch_spacewar_game_GameManager.nShips - 1) / 2 * com_adrienheisch_spacewar_game_GameManager.stage.stageHeight / (com_adrienheisch_spacewar_game_GameManager.nShips / 2));
 		lShip.set_rotation(-90);
 	}
+	com_adrienheisch_spacewar_ui_UIManager.startGame();
 	com_adrienheisch_spacewar_game_GameManager.stage.addEventListener("enterFrame",com_adrienheisch_spacewar_game_GameManager.gameLoop);
 };
 com_adrienheisch_spacewar_game_GameManager.gameLoop = function(pEvent) {
@@ -4725,12 +4726,45 @@ com_adrienheisch_spacewar_game_GameManager.stop = function() {
 com_adrienheisch_spacewar_game_GameManager.prototype = {
 	__class__: com_adrienheisch_spacewar_game_GameManager
 };
+var com_adrienheisch_spacewar_ui_UIManager = function() {
+};
+$hxClasses["com.adrienheisch.spacewar.ui.UIManager"] = com_adrienheisch_spacewar_ui_UIManager;
+com_adrienheisch_spacewar_ui_UIManager.__name__ = ["com","adrienheisch","spacewar","ui","UIManager"];
+com_adrienheisch_spacewar_ui_UIManager.init = function() {
+	com_adrienheisch_spacewar_ui_UIManager.stage = com_adrienheisch_spacewar_Main.get_instance().stage;
+	com_adrienheisch_spacewar_ui_UIManager.stage.addChild(com_adrienheisch_spacewar_ui_UIContainer.get_instance());
+	com_adrienheisch_spacewar_ui_UIManager.mainMenu();
+};
+com_adrienheisch_spacewar_ui_UIManager.mainMenu = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_menus_MainMenu.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.chooseNShips = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.chooseNPlayers = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.startGame = function() {
+	if(com_adrienheisch_spacewar_ui_Hud.get_instance() != null) {
+		com_adrienheisch_spacewar_ui_Hud.get_instance().destroy();
+	}
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_Hud.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.gameOver = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_GameOverScreen.get_instance());
+};
+com_adrienheisch_spacewar_ui_UIManager.stop = function() {
+	com_adrienheisch_spacewar_ui_UIContainer.get_instance().destroy();
+	com_adrienheisch_spacewar_ui_UIManager.stage = null;
+};
+com_adrienheisch_spacewar_ui_UIManager.prototype = {
+	__class__: com_adrienheisch_spacewar_ui_UIManager
+};
 var com_adrienheisch_spacewar_Main = function() {
 	openfl_display_MovieClip.call(this);
 	com_adrienheisch_spacewar_Main._instance = this;
 	this.initApp();
 	this.addChild(new openfl_display_FPS(10,100,16777215));
-	com_adrienheisch_spacewar_game_GameManager.startGame();
 };
 $hxClasses["com.adrienheisch.spacewar.Main"] = com_adrienheisch_spacewar_Main;
 com_adrienheisch_spacewar_Main.__name__ = ["com","adrienheisch","spacewar","Main"];
@@ -5705,40 +5739,6 @@ com_adrienheisch_spacewar_ui_UIContainer.prototype = $extend(openfl_display_Movi
 	}
 	,__class__: com_adrienheisch_spacewar_ui_UIContainer
 });
-var com_adrienheisch_spacewar_ui_UIManager = function() {
-};
-$hxClasses["com.adrienheisch.spacewar.ui.UIManager"] = com_adrienheisch_spacewar_ui_UIManager;
-com_adrienheisch_spacewar_ui_UIManager.__name__ = ["com","adrienheisch","spacewar","ui","UIManager"];
-com_adrienheisch_spacewar_ui_UIManager.init = function() {
-	com_adrienheisch_spacewar_ui_UIManager.stage = com_adrienheisch_spacewar_Main.get_instance().stage;
-	com_adrienheisch_spacewar_ui_UIManager.stage.addChild(com_adrienheisch_spacewar_ui_UIContainer.get_instance());
-	com_adrienheisch_spacewar_ui_UIManager.mainMenu();
-};
-com_adrienheisch_spacewar_ui_UIManager.mainMenu = function() {
-	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_menus_MainMenu.get_instance());
-};
-com_adrienheisch_spacewar_ui_UIManager.chooseNShips = function() {
-	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_menus_ChooseNShipsScreen.get_instance());
-};
-com_adrienheisch_spacewar_ui_UIManager.chooseNPlayers = function() {
-	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_menus_ChooseNPlayersScreen.get_instance());
-};
-com_adrienheisch_spacewar_ui_UIManager.startGame = function() {
-	if(com_adrienheisch_spacewar_ui_Hud.get_instance() != null) {
-		com_adrienheisch_spacewar_ui_Hud.get_instance().destroy();
-	}
-	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_Hud.get_instance());
-};
-com_adrienheisch_spacewar_ui_UIManager.gameOver = function() {
-	com_adrienheisch_spacewar_ui_UIContainer.get_instance().addChild(com_adrienheisch_spacewar_ui_GameOverScreen.get_instance());
-};
-com_adrienheisch_spacewar_ui_UIManager.stop = function() {
-	com_adrienheisch_spacewar_ui_UIContainer.get_instance().destroy();
-	com_adrienheisch_spacewar_ui_UIManager.stage = null;
-};
-com_adrienheisch_spacewar_ui_UIManager.prototype = {
-	__class__: com_adrienheisch_spacewar_ui_UIManager
-};
 var com_adrienheisch_spacewar_ui_buttons_CustomButton = function() {
 	openfl_display_Sprite.call(this);
 	com_adrienheisch_spacewar_ui_buttons_CustomButton.list.push(this);
@@ -32647,7 +32647,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 689042;
+	this.version = 117609;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -71864,7 +71864,7 @@ com_adrienheisch_spacewar_game_GameManager.shipMoveBackAllowed = false;
 com_adrienheisch_spacewar_game_GameManager.shipAutoSlow = true;
 com_adrienheisch_spacewar_game_GameManager.GAMELOOP_CLASSES = [com_adrienheisch_spacewar_game_Ship,com_adrienheisch_spacewar_game_Bullet,com_adrienheisch_spacewar_game_Explosion];
 com_adrienheisch_spacewar_game_GameManager.SHIPS_PER_LINE = 2;
-com_adrienheisch_spacewar_Main.MANAGERS = [com_adrienheisch_utils_KeyboardManager,com_adrienheisch_spacewar_background_BackgroundManager,com_adrienheisch_spacewar_game_GameManager];
+com_adrienheisch_spacewar_Main.MANAGERS = [com_adrienheisch_utils_KeyboardManager,com_adrienheisch_spacewar_background_BackgroundManager,com_adrienheisch_spacewar_game_GameManager,com_adrienheisch_spacewar_ui_UIManager];
 com_adrienheisch_spacewar_background_Star.list = [];
 com_adrienheisch_spacewar_game_AIShip.movePrediction = true;
 com_adrienheisch_spacewar_game_AIShip.shootPrediction = true;

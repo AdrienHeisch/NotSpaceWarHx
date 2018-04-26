@@ -17,7 +17,7 @@ class Main extends MovieClip
 {
     public static var instance(get, never) : Main;
 
-    private static var MANAGERS : Array<Dynamic> = [KeyboardManager, BackgroundManager, GameManager/*, UIManager*/];  //the order matters !  
+    private static var MANAGERS : Array<Dynamic> = [KeyboardManager, BackgroundManager, GameManager, UIManager];  //the order matters !  
     
     private static var _instance : Main;
     
@@ -35,8 +35,6 @@ class Main extends MovieClip
         initApp();
 		
 		addChild(new FPS(10, 100, 0xFFFFFF));
-		
-		GameManager.startGame();
     }
     
     public function initApp() : Void

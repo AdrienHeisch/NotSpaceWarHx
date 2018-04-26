@@ -55,7 +55,7 @@ class GameManager
             lShip.rotation = -90;
         }
         
-        //UIManager.startGame();
+        UIManager.startGame();
         
         stage.addEventListener(Event.ENTER_FRAME, gameLoop);
     }
