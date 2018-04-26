@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "NotSpaceWar";
-	var config = { build : "5", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.spacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
+	var config = { build : "6", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.spacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -4801,50 +4801,6 @@ DocumentClass.__super__ = com_adrienheisch_spacewar_Main;
 DocumentClass.prototype = $extend(com_adrienheisch_spacewar_Main.prototype,{
 	__class__: DocumentClass
 });
-var Bullet5 = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[56];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["Bullet5"] = Bullet5;
-Bullet5.__name__ = ["Bullet5"];
-Bullet5.__super__ = openfl_display_MovieClip;
-Bullet5.prototype = $extend(openfl_display_MovieClip.prototype,{
-	__class__: Bullet5
-});
-var ChooseNPlayersScreen = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[53];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["ChooseNPlayersScreen"] = ChooseNPlayersScreen;
-ChooseNPlayersScreen.__name__ = ["ChooseNPlayersScreen"];
-ChooseNPlayersScreen.__super__ = openfl_display_MovieClip;
-ChooseNPlayersScreen.prototype = $extend(openfl_display_MovieClip.prototype,{
-	mcButton1: null
-	,mcButton2: null
-	,__class__: ChooseNPlayersScreen
-});
-var ChooseNShipsScreen = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[51];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["ChooseNShipsScreen"] = ChooseNShipsScreen;
-ChooseNShipsScreen.__name__ = ["ChooseNShipsScreen"];
-ChooseNShipsScreen.__super__ = openfl_display_MovieClip;
-ChooseNShipsScreen.prototype = $extend(openfl_display_MovieClip.prototype,{
-	mcButton2: null
-	,mcButton3: null
-	,mcButton4: null
-	,__class__: ChooseNShipsScreen
-});
 var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
 };
@@ -4937,62 +4893,6 @@ EReg.prototype = {
 	}
 	,__class__: EReg
 };
-var Explosion = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[47];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["Explosion"] = Explosion;
-Explosion.__name__ = ["Explosion"];
-Explosion.__super__ = openfl_display_MovieClip;
-Explosion.prototype = $extend(openfl_display_MovieClip.prototype,{
-	__class__: Explosion
-});
-var GameOverScreen = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[31];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["GameOverScreen"] = GameOverScreen;
-GameOverScreen.__name__ = ["GameOverScreen"];
-GameOverScreen.__super__ = openfl_display_MovieClip;
-GameOverScreen.prototype = $extend(openfl_display_MovieClip.prototype,{
-	txtWinner: null
-	,__class__: GameOverScreen
-});
-var HealthBar = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[27];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["HealthBar"] = HealthBar;
-HealthBar.__name__ = ["HealthBar"];
-HealthBar.__super__ = openfl_display_MovieClip;
-HealthBar.prototype = $extend(openfl_display_MovieClip.prototype,{
-	mcMask: null
-	,mcFill: null
-	,txtInfo: null
-	,__class__: HealthBar
-});
-var Hud = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[20];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["Hud"] = Hud;
-Hud.__name__ = ["Hud"];
-Hud.__super__ = openfl_display_MovieClip;
-Hud.prototype = $extend(openfl_display_MovieClip.prototype,{
-	__class__: Hud
-});
 var HxOverrides = function() { };
 $hxClasses["HxOverrides"] = HxOverrides;
 HxOverrides.__name__ = ["HxOverrides"];
@@ -5122,7 +5022,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":\"swf-lib\",\"assets\":\"aoy4:pathy22:lib%2Fswf-lib%2F54.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y22:lib%2Fswf-lib%2F56.pngR2i240R3R4R5R7R6tgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i150711R3y4:TEXTR5R8R6tgh\",\"version\":2,\"libraryArgs\":[\"lib/swf-lib/swf-lib.bin\"],\"libraryType\":\"openfl._internal.swf.SWFLiteLibrary\"}";
+	data = "{\"name\":\"swf-lib\",\"assets\":\"aoy4:pathy22:lib%2Fswf-lib%2F54.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i150711R3y4:TEXTR5R7R6tgh\",\"version\":2,\"libraryArgs\":[\"lib/swf-lib/swf-lib.bin\"],\"libraryType\":\"openfl._internal.swf.SWFLiteLibrary\"}";
 	manifest = lime_utils_AssetManifest.parse(data,rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("swf-lib",library);
@@ -5144,36 +5044,6 @@ ManifestResources.init = function(config) {
 	}
 };
 Math.__name__ = ["Math"];
-var NumberButton = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[49];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["NumberButton"] = NumberButton;
-NumberButton.__name__ = ["NumberButton"];
-NumberButton.__super__ = openfl_display_MovieClip;
-NumberButton.prototype = $extend(openfl_display_MovieClip.prototype,{
-	btnMenu: null
-	,txtDisplay: null
-	,__class__: NumberButton
-});
-var PlayButton = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[17];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["PlayButton"] = PlayButton;
-PlayButton.__name__ = ["PlayButton"];
-PlayButton.__super__ = openfl_display_MovieClip;
-PlayButton.prototype = $extend(openfl_display_MovieClip.prototype,{
-	btnMenu: null
-	,txtDisplay: null
-	,__class__: PlayButton
-});
 var Reflect = function() { };
 $hxClasses["Reflect"] = Reflect;
 Reflect.__name__ = ["Reflect"];
@@ -5239,34 +5109,6 @@ Reflect.makeVarArgs = function(f) {
 		return f(a);
 	};
 };
-var Ship = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[11];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["Ship"] = Ship;
-Ship.__name__ = ["Ship"];
-Ship.__super__ = openfl_display_MovieClip;
-Ship.prototype = $extend(openfl_display_MovieClip.prototype,{
-	mcColor: null
-	,mcShootPoint: null
-	,__class__: Ship
-});
-var Star = function() {
-	openfl_display_MovieClip.call(this);
-	var _this = openfl__$internal_swf_SWFLite.instances;
-	var swfLite = __map_reserved["lib/swf-lib/swf-lib.bin"] != null ? _this.getReserved("lib/swf-lib/swf-lib.bin") : _this.h["lib/swf-lib/swf-lib.bin"];
-	var symbol = swfLite.symbols.h[4];
-	this.__fromSymbol(swfLite,symbol);
-};
-$hxClasses["Star"] = Star;
-Star.__name__ = ["Star"];
-Star.__super__ = openfl_display_MovieClip;
-Star.prototype = $extend(openfl_display_MovieClip.prototype,{
-	__class__: Star
-});
 var Std = function() { };
 $hxClasses["Std"] = Std;
 Std.__name__ = ["Std"];
@@ -5914,7 +5756,6 @@ com_adrienheisch_spacewar_ui_buttons_CustomButton.prototype = $extend(openfl_dis
 		this.clip.stop();
 		this.txtDisplay.mouseEnabled = false;
 		this.btnMenu.addEventListener("click",$bind(this,this.onClick));
-		haxe_Log.trace("ok",{ fileName : "CustomButton.hx", lineNumber : 37, className : "com.adrienheisch.spacewar.ui.buttons.CustomButton", methodName : "init"});
 	}
 	,onClick: function(pEvent) {
 		this.btnMenu.removeEventListener("click",$bind(this,this.onClick));
@@ -32806,7 +32647,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 859785;
+	this.version = 727762;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

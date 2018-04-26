@@ -34,7 +34,6 @@ class CustomButton extends Sprite
         clip.stop();
         txtDisplay.mouseEnabled = false;
         btnMenu.addEventListener(MouseEvent.CLICK, onClick);
-		trace('ok');
 	}
     
     private function onClick(pEvent : Event) : Void
