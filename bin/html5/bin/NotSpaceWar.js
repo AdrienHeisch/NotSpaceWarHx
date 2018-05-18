@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "NotSpaceWar";
-	var config = { build : "8", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.spacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
+	var config = { build : "9", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.spacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -32647,7 +32647,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 117609;
+	this.version = 1197;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

@@ -21,7 +21,7 @@ class Star extends MovieClip
         
         list.push(this);
         
-		//addChild(sprite = Assets.getMovieClip("swf-lib:Star"));
+		addChild(sprite = Assets.getMovieClip("swf-lib:Star"));
 		
         //cacheAsBitmap = true;
         
