@@ -53,7 +53,7 @@ import sys.FileSystem;
 		
 		var data, manifest, library;
 		
-		data = '{"name":"swf-lib","assets":"aoy4:pathy22:lib%2Fswf-lib%2F54.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i150711R3y4:TEXTR5R7R6tgh","version":2,"libraryArgs":["lib/swf-lib/swf-lib.bin"],"libraryType":"openfl._internal.swf.SWFLiteLibrary"}';
+		data = '{"name":"swf-lib","assets":"aoy4:pathy22:lib%2Fswf-lib%2F56.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i151486R3y4:TEXTR5R7R6tgh","version":2,"libraryArgs":["lib/swf-lib/swf-lib.bin"],"libraryType":"openfl._internal.swf.SWFLiteLibrary"}';
 		manifest = AssetManifest.parse (data, rootPath);
 		library = AssetLibrary.fromManifest (manifest);
 		Assets.registerLibrary ("swf-lib", library);
@@ -80,7 +80,7 @@ import sys.FileSystem;
 #if !display
 #if flash
 
-@:keep @:bind #if display private #end class __ASSET__lib_swf_lib_54_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__lib_swf_lib_56_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__lib_swf_lib_swf_lib_bin extends null { }
 @:keep @:bind #if display private #end class __ASSET__lib_swf_lib_json extends null { }
 @:keep @:bind #if display private #end class __ASSET__manifest_default_json extends null { }
@@ -88,7 +88,7 @@ import sys.FileSystem;
 
 #elseif (desktop || cpp)
 
-@:image("D:/Dev/Haxe/NotSpaceWar/bin/html5/obj/libraries/swf-lib/54.png") #if display private #end class __ASSET__lib_swf_lib_54_png extends lime.graphics.Image {}
+@:image("D:/Dev/Haxe/NotSpaceWar/bin/html5/obj/libraries/swf-lib/56.png") #if display private #end class __ASSET__lib_swf_lib_56_png extends lime.graphics.Image {}
 @:file("D:/Dev/Haxe/NotSpaceWar/bin/html5/obj/libraries/swf-lib/swf-lib.bin") #if display private #end class __ASSET__lib_swf_lib_swf_lib_bin extends haxe.io.Bytes {}
 @:file("") #if display private #end class __ASSET__lib_swf_lib_json extends haxe.io.Bytes {}
 @:file("") #if display private #end class __ASSET__manifest_default_json extends haxe.io.Bytes {}

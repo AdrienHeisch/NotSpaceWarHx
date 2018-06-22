@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "NotSpaceWar";
-	var config = { build : "9", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.spacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
+	var config = { build : "10", company : "Adrien Heisch", file : "NotSpaceWar", fps : 60, name : "NotSpaceWar", orientation : "", packageName : "com.adrienheisch.spacewar", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 720, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "NotSpaceWar", vsync : false, width : 1280, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -4400,34 +4400,6 @@ com_adrienheisch_utils_KeyboardManager.stop = function() {
 com_adrienheisch_utils_KeyboardManager.prototype = {
 	__class__: com_adrienheisch_utils_KeyboardManager
 };
-var com_adrienheisch_spacewar_background_BackgroundManager = function() {
-};
-$hxClasses["com.adrienheisch.spacewar.background.BackgroundManager"] = com_adrienheisch_spacewar_background_BackgroundManager;
-com_adrienheisch_spacewar_background_BackgroundManager.__name__ = ["com","adrienheisch","spacewar","background","BackgroundManager"];
-com_adrienheisch_spacewar_background_BackgroundManager.init = function() {
-	com_adrienheisch_spacewar_background_BackgroundManager.stage = com_adrienheisch_spacewar_Main.get_instance().stage;
-	com_adrienheisch_spacewar_background_BackgroundManager.stage.addChild(com_adrienheisch_spacewar_background_BackgroundContainer.get_instance());
-	com_adrienheisch_spacewar_background_BackgroundManager.drawBackground();
-};
-com_adrienheisch_spacewar_background_BackgroundManager.drawBackground = function() {
-	var lStar;
-	var i = 99;
-	while(i >= 0) {
-		var tmp = com_adrienheisch_spacewar_background_BackgroundContainer.get_instance();
-		lStar = new com_adrienheisch_spacewar_background_Star();
-		tmp.addChild(lStar);
-		lStar.set_x(com_adrienheisch_spacewar_background_BackgroundManager.stage.stageWidth * Math.random());
-		lStar.set_y(com_adrienheisch_spacewar_background_BackgroundManager.stage.stageHeight * Math.random());
-		--i;
-	}
-};
-com_adrienheisch_spacewar_background_BackgroundManager.stop = function() {
-	com_adrienheisch_spacewar_background_BackgroundContainer.get_instance().destroy();
-	com_adrienheisch_spacewar_background_BackgroundManager.stage = null;
-};
-com_adrienheisch_spacewar_background_BackgroundManager.prototype = {
-	__class__: com_adrienheisch_spacewar_background_BackgroundManager
-};
 var com_adrienheisch_spacewar_game_Ship = function() {
 	this.input = [];
 	this.color = 0;
@@ -5022,7 +4994,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":\"swf-lib\",\"assets\":\"aoy4:pathy22:lib%2Fswf-lib%2F54.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i150711R3y4:TEXTR5R7R6tgh\",\"version\":2,\"libraryArgs\":[\"lib/swf-lib/swf-lib.bin\"],\"libraryType\":\"openfl._internal.swf.SWFLiteLibrary\"}";
+	data = "{\"name\":\"swf-lib\",\"assets\":\"aoy4:pathy22:lib%2Fswf-lib%2F56.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i151486R3y4:TEXTR5R7R6tgh\",\"version\":2,\"libraryArgs\":[\"lib/swf-lib/swf-lib.bin\"],\"libraryType\":\"openfl._internal.swf.SWFLiteLibrary\"}";
 	manifest = lime_utils_AssetManifest.parse(data,rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("swf-lib",library);
@@ -5411,9 +5383,38 @@ com_adrienheisch_spacewar_background_BackgroundContainer.prototype = $extend(ope
 	}
 	,__class__: com_adrienheisch_spacewar_background_BackgroundContainer
 });
+var com_adrienheisch_spacewar_background_BackgroundManager = function() {
+};
+$hxClasses["com.adrienheisch.spacewar.background.BackgroundManager"] = com_adrienheisch_spacewar_background_BackgroundManager;
+com_adrienheisch_spacewar_background_BackgroundManager.__name__ = ["com","adrienheisch","spacewar","background","BackgroundManager"];
+com_adrienheisch_spacewar_background_BackgroundManager.init = function() {
+	com_adrienheisch_spacewar_background_BackgroundManager.stage = com_adrienheisch_spacewar_Main.get_instance().stage;
+	com_adrienheisch_spacewar_background_BackgroundManager.stage.addChild(com_adrienheisch_spacewar_background_BackgroundContainer.get_instance());
+	com_adrienheisch_spacewar_background_BackgroundManager.drawBackground();
+};
+com_adrienheisch_spacewar_background_BackgroundManager.drawBackground = function() {
+	var lStar;
+	var i = 99;
+	while(i >= 0) {
+		var tmp = com_adrienheisch_spacewar_background_BackgroundContainer.get_instance();
+		lStar = new com_adrienheisch_spacewar_background_Star();
+		tmp.addChild(lStar);
+		lStar.set_x(com_adrienheisch_spacewar_background_BackgroundManager.stage.stageWidth * Math.random());
+		lStar.set_y(com_adrienheisch_spacewar_background_BackgroundManager.stage.stageHeight * Math.random());
+		--i;
+	}
+};
+com_adrienheisch_spacewar_background_BackgroundManager.stop = function() {
+	com_adrienheisch_spacewar_background_BackgroundContainer.get_instance().destroy();
+	com_adrienheisch_spacewar_background_BackgroundManager.stage = null;
+};
+com_adrienheisch_spacewar_background_BackgroundManager.prototype = {
+	__class__: com_adrienheisch_spacewar_background_BackgroundManager
+};
 var com_adrienheisch_spacewar_background_Star = function() {
 	openfl_display_MovieClip.call(this);
 	com_adrienheisch_spacewar_background_Star.list.push(this);
+	this.addChild(this.sprite = openfl_utils_Assets.getMovieClip("swf-lib:Star"));
 	var lScale = Math.random();
 	this.set_scaleX(lScale);
 	this.set_scaleY(lScale);
@@ -5809,12 +5810,22 @@ com_adrienheisch_spacewar_ui_buttons_PlayButton.prototype = $extend(com_adrienhe
 });
 var com_adrienheisch_spacewar_ui_menus_Menu = function() {
 	openfl_display_MovieClip.call(this);
+	this.set_x(0);
+	this.set_y(0);
+	this.get_graphics().beginFill(16711680);
+	this.get_graphics().drawRect(0,0,this.get_width(),this.get_height());
+	this.addEventListener("addedToStage",$bind(this,this.init));
 };
 $hxClasses["com.adrienheisch.spacewar.ui.menus.Menu"] = com_adrienheisch_spacewar_ui_menus_Menu;
 com_adrienheisch_spacewar_ui_menus_Menu.__name__ = ["com","adrienheisch","spacewar","ui","menus","Menu"];
 com_adrienheisch_spacewar_ui_menus_Menu.__super__ = openfl_display_MovieClip;
 com_adrienheisch_spacewar_ui_menus_Menu.prototype = $extend(openfl_display_MovieClip.prototype,{
 	sprite: null
+	,init: function(pEvent) {
+		this.removeEventListener("addedToStage",$bind(this,this.init));
+		this.set_width(com_adrienheisch_spacewar_Main.get_instance().stage.stageWidth);
+		this.set_height(com_adrienheisch_spacewar_Main.get_instance().stage.stageHeight);
+	}
 	,destroy: function() {
 		var i = com_adrienheisch_spacewar_ui_buttons_CustomButton.list.length - 1;
 		while(i >= 0) {
@@ -32647,7 +32658,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 1197;
+	this.version = 757942;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -71864,7 +71875,7 @@ com_adrienheisch_spacewar_game_GameManager.shipMoveBackAllowed = false;
 com_adrienheisch_spacewar_game_GameManager.shipAutoSlow = true;
 com_adrienheisch_spacewar_game_GameManager.GAMELOOP_CLASSES = [com_adrienheisch_spacewar_game_Ship,com_adrienheisch_spacewar_game_Bullet,com_adrienheisch_spacewar_game_Explosion];
 com_adrienheisch_spacewar_game_GameManager.SHIPS_PER_LINE = 2;
-com_adrienheisch_spacewar_Main.MANAGERS = [com_adrienheisch_utils_KeyboardManager,com_adrienheisch_spacewar_background_BackgroundManager,com_adrienheisch_spacewar_game_GameManager,com_adrienheisch_spacewar_ui_UIManager];
+com_adrienheisch_spacewar_Main.MANAGERS = [com_adrienheisch_utils_KeyboardManager,com_adrienheisch_spacewar_game_GameManager,com_adrienheisch_spacewar_ui_UIManager];
 com_adrienheisch_spacewar_background_Star.list = [];
 com_adrienheisch_spacewar_game_AIShip.movePrediction = true;
 com_adrienheisch_spacewar_game_AIShip.shootPrediction = true;
