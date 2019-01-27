@@ -50,7 +50,7 @@ class AIShip extends Ship
 				return pA < pB ? -1 : 1;
 			});
             
-            target = Ship.list[Lambda.indexOf(lDistances, lSortedDistances[1])];
+            target = Ship.list[lDistances.indexOf(lSortedDistances[1])];
             var lDistanceToTarget : Float = lSortedDistances[1];
             
             var lAngle : Float;

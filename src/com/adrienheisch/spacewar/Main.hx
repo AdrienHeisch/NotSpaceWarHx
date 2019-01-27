@@ -4,18 +4,20 @@ import com.adrienheisch.spacewar.background.BackgroundManager;
 import com.adrienheisch.spacewar.game.GameManager;
 import com.adrienheisch.spacewar.ui.UIManager;
 import com.adrienheisch.utils.KeyboardManager;
+import openfl.Assets;
+import openfl.Lib;
 import openfl.display.FPS;
 import openfl.display.MovieClip;
 
 /**
-	 * ...
-	 * @author Adrien Heisch
-	 */
+ * ...
+ * @author Adrien Heisch
+ */
 class Main extends MovieClip
 {
     public static var instance(get, never) : Main;
 
-    private static var MANAGERS : Array<Dynamic> = [KeyboardManager, /*BackgroundManager,*/ GameManager, UIManager];  //the order matters !  
+    private static var MANAGERS : Array<Dynamic> = [KeyboardManager, BackgroundManager, GameManager, UIManager];  //the order matters !  
     
     private static var _instance : Main;
     
@@ -29,6 +31,8 @@ class Main extends MovieClip
         super();
         
         _instance = this;
+		
+		stage.frameRate = 59;
         
         initApp();
 		

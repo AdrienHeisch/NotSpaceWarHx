@@ -69,7 +69,7 @@ class HealthBar extends Sprite
     
     public function destroy() : Void
     {
-        list.splice(Lambda.indexOf(list, this), 1);
+        list.splice(list.indexOf(this), 1);
         if (parent != null)
         {
             parent.removeChild(this);

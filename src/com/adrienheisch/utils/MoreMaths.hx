@@ -1,7 +1,5 @@
 package com.adrienheisch.utils;
 
-import openfl.geom.Point;
-
 /**
 	 * ...
 	 * @author Adrien Heisch

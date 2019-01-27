@@ -7,23 +7,22 @@ import openfl.errors.Error;
 import com.adrienheisch.spacewar.ui.buttons.PlayButton;
 
 /**
-	 * ...
-	 * @author Adrien Heisch
-	 */
+ * ...
+ * @author Adrien Heisch
+ */
 class MainMenu extends Menu
 {
     public static var instance(get, never) : MainMenu;
-
     
     /**
-		 * instance unique de la classe MainMenu
-		 */
+	 * instance unique de la classe MainMenu
+	 */
     private static var _instance : MainMenu;
     
     /**
-		 * Retourne l'instance unique de la classe, et la crée si elle n'existait pas au préalable
-		 * @return instance unique
-		 */
+	 * Retourne l'instance unique de la classe, et la crée si elle n'existait pas au préalable
+	 * @return instance unique
+	 */
     private static function get_instance() : MainMenu
     {
         if (_instance == null)
@@ -56,8 +55,8 @@ class MainMenu extends Menu
     }
     
     /**
-		 * détruit l'instance unique et met sa référence interne à null
-		 */
+	 * détruit l'instance unique et met sa référence interne à null
+	 */
     override public function destroy() : Void
     {
         _instance = null;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	<!-- NMML reference: https://gist.github.com/1763850 -->
+	<!--<set name="html5-backend" value="openfl-bitfive" />-->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
 	<meta title="NotSpaceWar" package="com.adrienheisch.spacewar" version="1.0.0" company="Adrien Heisch" />
@@ -8,9 +9,10 @@
 	<!-- output -->
 	<app main="com.adrienheisch.spacewar.Main" file="NotSpaceWar" path="bin" />
 	
-	<window background="#000000" fps="60" />
-	<window width="1280" height="720" unless="mobile" />
-	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
+	<!--window info-->
+	<window background="#000000" />
+	<window width="1280" height="720" />
+	<window hardware="true" allow-shaders="true" require-shaders="true" depth-buffer="false" stencil-buffer="true" vsync="false" anti-aliasing="0" />
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
@@ -18,10 +20,12 @@
 	
 	<!-- assets -->
 	<icon path="assets/icon.png" />
-	<assets path="assets/img" rename="img" />
 	<library path="assets/swf/NotSpaceWar.swf" id="swf-lib" preload="true" />
 	
 	<!-- optimize output -->
 	<haxeflag name="-dce std" />
+	
+	<!--additional parameters-->
+	<haxedef name="swf-parent-fps" />
 	
 </project>

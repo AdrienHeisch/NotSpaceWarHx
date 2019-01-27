@@ -4,15 +4,15 @@ import com.adrienheisch.utils.KeyboardManager;
 import openfl.ui.Keyboard;
 
 /**
-	 * ...
-	 * @author Adrien Heisch
-	 */
+ * ...
+ * @author Adrien Heisch
+ */
 class PlayerShip extends Ship
 {
     private static var CONTROLS : Array<Array<Int>> = [
-                [Keyboard.Q, Keyboard.D, Keyboard.Z, Keyboard.S, Keyboard.T, Keyboard.Y], 
-                [Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN, Keyboard.NUMPAD_2, Keyboard.NUMPAD_3]
-        ];
+		[Keyboard.Q, Keyboard.D, Keyboard.Z, Keyboard.S, Keyboard.T, Keyboard.Y], 
+		[Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN, Keyboard.NUMPAD_2, Keyboard.NUMPAD_3]
+	];
     
     private var controls : Array<Int> = new Array<Int>();
     
@@ -20,7 +20,7 @@ class PlayerShip extends Ship
     {
         super();
         
-        controls = CONTROLS[Lambda.indexOf(Ship.list, this)];
+        controls = CONTROLS[Ship.list.indexOf(this)];
     }
     
     override public function gameLoop() : Void

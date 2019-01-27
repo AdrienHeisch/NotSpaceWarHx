@@ -28,6 +28,7 @@ class CustomButton extends Sprite
 	
 	public function init(): Void
 	{
+		trace(clip, [for (child in clip.__children) child.name]);
 		txtDisplay = cast(clip.getChildByName("txtDisplay"), TextField);
 		btnMenu = cast(clip.getChildByName("btnMenu"), SimpleButton);
 		
@@ -43,7 +44,7 @@ class CustomButton extends Sprite
     
     public function destroy() : Void
     {
-        list.splice(Lambda.indexOf(list, this), 1);
+        list.splice(list.indexOf(this), 1);
         if (parent != null)
         {
             parent.removeChild(this);

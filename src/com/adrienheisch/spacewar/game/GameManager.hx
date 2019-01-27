@@ -80,14 +80,6 @@ class GameManager
         {
             gameOver();
         }
-        
-        i = GameContainer.instance.numChildren - 1;
-        while (i >= 0)
-        {
-            GameContainer.instance.getChildAt(i).scaleX = 0.5;
-            GameContainer.instance.getChildAt(i).scaleY = 0.5;
-            i--;
-        }
     }
     
     private static function gameOver()

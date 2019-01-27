@@ -30,7 +30,7 @@ class NumberButton extends CustomButton
         }
         else
         {
-            index = Lambda.indexOf(CustomButton.list, this) + 1;
+            index = CustomButton.list.indexOf(this) + 1;
             trace(this + " should have an instance name (mcButton + int).");
         }
         

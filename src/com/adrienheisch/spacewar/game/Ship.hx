@@ -8,9 +8,9 @@ import openfl.geom.ColorTransform;
 import openfl.geom.Point;
 
 /**
-	 * ...
-	 * @author Adrien Heisch
-	 */
+ * ...
+ * @author Adrien Heisch
+ */
 class Ship extends Sprite
 {
 	public static var list : Array<Ship> = new Array<Ship>();
@@ -32,7 +32,7 @@ class Ship extends Sprite
 	private static inline var SHOOT_COOLDOWN : Int = 20;
 
 	public var velocity : Point = new Point(0, 0);
-	private var maxSpeed : Int = 0;
+	private var maxSpeed : Float = 0;
 	private var acceleration : Point = new Point(0, 0);
 	private var accelerationValue : Float = 0;
 	private var turningSpeed : Float = 0;
@@ -52,20 +52,18 @@ class Ship extends Sprite
 	public function new()
 	{
 		super();
-
+		
 		list.push(this);
-
+		
 		addChild(sprite = Assets.getMovieClip("swf-lib:Ship"));
 		mcColor = sprite.getChildByName("mcColor");
 		mcShootPoint = sprite.getChildByName("mcShootPoint");
-
-		//cacheAsBitmap = true;
-
+		
 		health = MAX_HEALTH;
-		id = Lambda.indexOf(list, this);
-
+		id = list.indexOf(this);
+		
 		mcShootPoint.visible = false;
-
+		
 		color = COLORS[id];
 		var lColorTransform : ColorTransform = new ColorTransform();
 		lColorTransform.color = color;
@@ -82,10 +80,10 @@ class Ship extends Sprite
 		{
 			shootTimer -= 1;
 		}
-
+		
 		maxSpeed = BASE_MAX_SPEED * ((input[4]) ? BOOST_MULT : 1);
 		accelerationValue = BASE_ACCELERATION * ((input[4]) ? BOOST_MULT : 1);
-
+		
 		if ((!input[0] && !input[1]) || (input[0] && input[1]))
 		{
 			turningAcceleration = 0;
@@ -106,14 +104,14 @@ class Ship extends Sprite
 		{
 			turningAcceleration = TURNING_ACCELERATION_VALUE;
 		}
-
+		
 		if ((turningSpeed >= MAX_TURNING_SPEED && turningAcceleration > 0) || (turningSpeed <= -MAX_TURNING_SPEED && turningAcceleration < 0))
 		{
 			turningAcceleration = 0;
 		}
 		turningSpeed += turningAcceleration;
 		rotation += turningSpeed;
-
+		
 		if (input[2])
 		{
 			acceleration.x = accelerationValue * Math.cos(rotation * Math.PI / 180);
@@ -133,16 +131,16 @@ class Ship extends Sprite
 				acceleration.y = SELF_BRAKE * -Math.sin(Math.atan2(velocity.y, velocity.x));
 			}
 		}
-
+		
 		velocity.x += acceleration.x;
 		velocity.y += acceleration.y;
-
+		
 		if (velocity.length >= maxSpeed)
 		{
 			velocity.x += (SELF_BRAKE + accelerationValue) * -Math.cos(Math.atan2(velocity.y, velocity.x));
 			velocity.y += (SELF_BRAKE + accelerationValue) * -Math.sin(Math.atan2(velocity.y, velocity.x));
 		}
-
+		
 		if ((x <= width / 2 && velocity.x < 0) || (x >= stage.stageWidth - width / 2 && velocity.x > 0))
 		{
 			velocity.x *= -1;
@@ -151,7 +149,7 @@ class Ship extends Sprite
 		{
 			velocity.y *= -1;
 		}
-
+		
 		x += velocity.x;
 		y += velocity.y;
 	}
@@ -177,8 +175,8 @@ class Ship extends Sprite
 		parent.addChild(lExplosion = new Explosion());
 		lExplosion.x = x;
 		lExplosion.y = y;
-
-		list.splice(Lambda.indexOf(list, this), 1);
+		
+		list.splice(list.indexOf(this), 1);
 		if (parent != null)
 		{
 			parent.removeChild(this);

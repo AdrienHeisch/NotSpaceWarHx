@@ -1,17 +1,19 @@
 package com.adrienheisch.spacewar.game;
 
 import openfl.Assets;
+import openfl.display.DisplayObjectContainer;
 import openfl.display.MovieClip;
 import openfl.display.Sprite;
 
 /**
-	 * ...
-	 * @author Adrien Heisch
-	 */
+ * ...
+ * @author Adrien Heisch
+ */
 class Explosion extends Sprite
 {
     
     public static var list : Array<Explosion> = new Array<Explosion>();
+	public static var safeAnimationEndFrame:Int = 10;
 	
 	public var clip:MovieClip;
     
@@ -26,7 +28,7 @@ class Explosion extends Sprite
     
     public function gameLoop() : Void
     {
-        if (clip.currentFrame == clip.totalFrames)
+        if (clip.totalFrames == clip.currentFrame)// <= safeAnimationEndFrame)
         {
             destroy();
         }
@@ -34,7 +36,7 @@ class Explosion extends Sprite
     
     public function destroy() : Void
     {
-        list.splice(Lambda.indexOf(list, this), 1);
+        list.splice(list.indexOf(this), 1);
         if (parent != null)
         {
             parent.removeChild(this);

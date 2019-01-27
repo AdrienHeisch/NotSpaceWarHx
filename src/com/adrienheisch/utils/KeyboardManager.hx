@@ -25,7 +25,7 @@ class KeyboardManager
     
     private static function registerKey(pEvent : KeyboardEvent) : Void
     {
-        if (Lambda.indexOf(keys, pEvent.keyCode) < 0)
+        if (keys.indexOf(pEvent.keyCode) < 0)
         {
             keys.push(pEvent.keyCode);
         }
@@ -33,7 +33,7 @@ class KeyboardManager
     
     private static function unregisterKey(pEvent : KeyboardEvent) : Void
     {
-        keys.splice(Lambda.indexOf(keys, pEvent.keyCode), 1);
+        keys.splice(keys.indexOf(pEvent.keyCode), 1);
     }
     
     public static function stop() : Void

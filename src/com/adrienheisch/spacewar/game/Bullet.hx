@@ -7,9 +7,9 @@ import openfl.geom.ColorTransform;
 import openfl.geom.Point;
 
 /**
-	 * ...
-	 * @author Adrien Heisch
-	 */
+ * ...
+ * @author Adrien Heisch
+ */
 class Bullet extends Sprite
 {
     public var color(never, set) : Int;
@@ -33,7 +33,6 @@ class Bullet extends Sprite
         list.push(this);
 		
 		addChild(sprite = Assets.getMovieClip("swf-lib:Bullet"));
-        
         cacheAsBitmap = true;
     }
     
@@ -41,7 +40,7 @@ class Bullet extends Sprite
     {
         var lColorTransform : ColorTransform = new ColorTransform();
         lColorTransform.color = pColor;
-        transform.colorTransform = lColorTransform;
+        sprite.transform.colorTransform = lColorTransform;
         return pColor;
     }
     
@@ -81,7 +80,7 @@ class Bullet extends Sprite
     
     public function destroy() : Void
     {
-        list.splice(Lambda.indexOf(list, this), 1);
+        list.splice(list.indexOf(this), 1);
         if (parent != null)
         {
             parent.removeChild(this);
