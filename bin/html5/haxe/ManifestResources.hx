@@ -63,7 +63,7 @@ import sys.FileSystem;
 		
 		#else
 		
-		data = '{"name":"swf-lib","assets":"aoy4:pathy22:lib%2Fswf-lib%2F54.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y22:lib%2Fswf-lib%2F56.pngR2i240R3R4R5R7R6tgoR0y22:lib%2Fswf-lib%2F57.pngR2i240R3R4R5R8R6tgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i150440R3y4:TEXTR5R9R6tgh","rootPath":null,"version":2,"libraryArgs":["lib/swf-lib/swf-lib.bin"],"libraryType":"openfl._internal.swf.SWFLiteLibrary"}';
+		data = '{"name":"swf-lib","assets":"aoy4:pathy22:lib%2Fswf-lib%2F56.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i150440R3y4:TEXTR5R7R6tgh","rootPath":null,"version":2,"libraryArgs":["lib/swf-lib/swf-lib.bin"],"libraryType":"openfl._internal.swf.SWFLiteLibrary"}';
 		manifest = AssetManifest.parse (data, rootPath);
 		library = AssetLibrary.fromManifest (manifest);
 		Assets.registerLibrary ("swf-lib", library);
@@ -98,9 +98,7 @@ null
 #if !display
 #if flash
 
-@:keep @:bind #if display private #end class __ASSET__lib_swf_lib_54_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__lib_swf_lib_56_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__lib_swf_lib_57_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__lib_swf_lib_swf_lib_bin extends null { }
 @:keep @:bind #if display private #end class __ASSET__lib_swf_lib_json extends null { }
 @:keep @:bind #if display private #end class __ASSET__manifest_default_json extends null { }
@@ -108,9 +106,7 @@ null
 
 #elseif (desktop || cpp)
 
-@:keep @:image("D:/Dev/Haxe/NotSpaceWar/bin/html5/obj/libraries/swf-lib/54.png") #if display private #end class __ASSET__lib_swf_lib_54_png extends lime.graphics.Image {}
 @:keep @:image("D:/Dev/Haxe/NotSpaceWar/bin/html5/obj/libraries/swf-lib/56.png") #if display private #end class __ASSET__lib_swf_lib_56_png extends lime.graphics.Image {}
-@:keep @:image("D:/Dev/Haxe/NotSpaceWar/bin/html5/obj/libraries/swf-lib/57.png") #if display private #end class __ASSET__lib_swf_lib_57_png extends lime.graphics.Image {}
 @:keep @:file("D:/Dev/Haxe/NotSpaceWar/bin/html5/obj/libraries/swf-lib/swf-lib.bin") #if display private #end class __ASSET__lib_swf_lib_swf_lib_bin extends haxe.io.Bytes {}
 @:keep @:file("") #if display private #end class __ASSET__lib_swf_lib_json extends haxe.io.Bytes {}
 @:keep @:file("") #if display private #end class __ASSET__manifest_default_json extends haxe.io.Bytes {}

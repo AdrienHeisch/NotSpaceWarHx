@@ -805,9 +805,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","11");
+		_this.setReserved("build","12");
 	} else {
-		_this.h["build"] = "11";
+		_this.h["build"] = "12";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -5313,7 +5313,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":\"swf-lib\",\"assets\":\"aoy4:pathy22:lib%2Fswf-lib%2F54.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y22:lib%2Fswf-lib%2F56.pngR2i240R3R4R5R7R6tgoR0y22:lib%2Fswf-lib%2F57.pngR2i240R3R4R5R8R6tgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i150440R3y4:TEXTR5R9R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[\"lib/swf-lib/swf-lib.bin\"],\"libraryType\":\"openfl._internal.swf.SWFLiteLibrary\"}";
+	data = "{\"name\":\"swf-lib\",\"assets\":\"aoy4:pathy22:lib%2Fswf-lib%2F56.pngy4:sizei240y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y27:lib%2Fswf-lib%2Fswf-lib.binR2i150440R3y4:TEXTR5R7R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[\"lib/swf-lib/swf-lib.bin\"],\"libraryType\":\"openfl._internal.swf.SWFLiteLibrary\"}";
 	manifest = lime_utils_AssetManifest.parse(data,rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("swf-lib",library);

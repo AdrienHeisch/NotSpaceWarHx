@@ -38,7 +38,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "11",
+			build: "12",
 			company: "Adrien Heisch",
 			file: "NotSpaceWar",
 			fps: 60,
@@ -110,7 +110,7 @@ import haxe.macro.Expr;
 		#if (lime >= "7.0.0")
 		ManifestResources.init (config);
 		
-		app.meta["build"] = "11";
+		app.meta["build"] = "12";
 		app.meta["company"] = "Adrien Heisch";
 		app.meta["file"] = "NotSpaceWar";
 		app.meta["name"] = "NotSpaceWar";
