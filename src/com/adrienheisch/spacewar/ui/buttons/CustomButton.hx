@@ -28,7 +28,6 @@ class CustomButton extends Sprite
 	
 	public function init(): Void
 	{
-		trace(clip, [for (child in clip.__children) child.name]);
 		txtDisplay = cast(clip.getChildByName("txtDisplay"), TextField);
 		btnMenu = cast(clip.getChildByName("btnMenu"), SimpleButton);
 		

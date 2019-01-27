@@ -805,9 +805,9 @@ ApplicationMain.create = function(config) {
 	ManifestResources.init(config);
 	var _this = app.meta;
 	if(__map_reserved["build"] != null) {
-		_this.setReserved("build","12");
+		_this.setReserved("build","13");
 	} else {
-		_this.h["build"] = "12";
+		_this.h["build"] = "13";
 	}
 	var _this1 = app.meta;
 	if(__map_reserved["company"] != null) {
@@ -6044,17 +6044,6 @@ com_adrienheisch_spacewar_ui_buttons_CustomButton.prototype = $extend(openfl_dis
 	,txtDisplay: null
 	,btnMenu: null
 	,init: function() {
-		var tmp = haxe_Log.trace;
-		var tmp1 = this.clip;
-		var _g = [];
-		var _g1 = 0;
-		var _g2 = this.clip.__children;
-		while(_g1 < _g2.length) {
-			var child = _g2[_g1];
-			++_g1;
-			_g.push(child.get_name());
-		}
-		tmp(tmp1,{ fileName : "CustomButton.hx", lineNumber : 31, className : "com.adrienheisch.spacewar.ui.buttons.CustomButton", methodName : "init", customParams : [_g]});
 		this.txtDisplay = js_Boot.__cast(this.clip.getChildByName("txtDisplay") , openfl_text_TextField);
 		this.btnMenu = js_Boot.__cast(this.clip.getChildByName("btnMenu") , openfl_display_SimpleButton);
 		this.clip.stop();
